@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="a7v.js"></script>
+    <!--<script src="annyang.min.js"></script>-->
+    <!--<script src="artyom.window.js"></script>-->
+    <title></title>
+    <style>
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        $(function () {
+            
+        })
+    </script>
+    <!--<textarea id="disp"></textarea>
+    <span id="myErrorText"></span>-->
+    <!--<script>
+        var recognition = new webkitSpeechRecognition();
+        recognition.lang = "en-IN";
+        //recognition.continuous = true;
+        //recognition.interimResults = true;
+        var newLine = "\r\n";
+        recognition.onresult = function (event) {
+            //console.log(event)
+            var txtRec = '';
+            for (var i = event.resultIndex; i < event.results.length; ++i) {
+                txtRec += event.results[i][0].transcript;
+            }
+            var tt = $("#disp").val() + txtRec + newLine;
+            $("#disp").val(tt)
+            //recognition.start();
+            //$("#disp").val(txtRec);
+        }
+        recognition.onspeechend = function (event) {
+            //console.log('Speech recognition has stopped.',event);
+        }
+        recognition.onstart = function (event) {
+            //console.log("onstart", event);
+        }
+        recognition.onerror = function (event) {
+            //console.log("onerror", event);
+        }
+        recognition.onend = function () {
+            //console.log("onend");
+            recognition.stop();
+            recognition.start();
+        }
+
+        recognition.start();
+    </script>-->
+    <script>
+        //if (annyang) {
+        //     Add our commands to annyang
+        //    annyang.addCommands({
+        //        'hello': function () { alert('Hello world!'); }
+        //    });
+
+        //    var commands = {
+        //        'create sharp file :name': createcSharpfile,
+        //        'create javascript file :name': createcSharpfile,
+
+        //        'send long *text': typeText,
+
+        //         By defining a part of the following command as optional, annyang will respond to both:
+        //         "say hello to my little friend" as well as "say hello friend"
+        //        'hello (to my little) friend': greeting
+        //    };
+
+        //    var createcSharpfile = function (name) {
+        //        var tt = $("#disp").val() + name + "/n";
+        //        $("#disp").val(tt);
+        //    }
+        //    var typeText = function (text) {
+        //        var tt = $("#disp").val() + text + "/n";
+        //        $("#disp").val(tt)
+        //    }
+        //    var greeting = function () {
+        //        var tt = $("#disp").val() + "Hello/n";
+        //        $('#disp').text(tt);
+        //    }
+        //    annyang.setLanguage("en-IN");
+        //    annyang.addCommands(commands);
+        //    annyang.addCallback('error', function () {
+        //        $('#myErrorText').text('There was an error!');
+        //    });
+        //    annyang.addCallback('errorNetwork', function () {
+        //        console.log("nc..");
+        //    }, this);
+
+        //    annyang.addCallback('resultMatch', function (userSaid, commandText, phrases) {
+        //        console.log(userSaid); // sample output: 'hello'
+        //        console.log(commandText); // sample output: 'hello (there)'
+        //        console.log(phrases); // sample output: ['hello', 'halo', 'yellow', 'polo', 'hello kitty']
+        //    });
+
+        //    annyang.start();
+        //}
+    </script>
+    <!--<script>
+        const artyom = new Artyom();
+
+        // Or if you are using it in the browser
+        // var artyom = new Artyom();// or `new window.Artyom()`
+
+        // Add command (Short code artisan way)
+        artyom.on(['Good morning', 'Good afternoon']).then((i) => {
+            switch (i) {
+                case 0:
+                    artyom.say("Good morning, how are you?");
+                    break;
+                case 1:
+                    artyom.say("Good afternoon, how are you?");
+                    break;
+            }
+        });
+
+        // Smart command (Short code artisan way), set the second parameter of .on to true
+        artyom.on(['Repeat after me *'], true).then((i, wildcard) => {
+            artyom.say("You've said : " + wildcard);
+        });
+
+        // or add some commandsDemostrations in the normal way
+        artyom.addCommands([
+            {
+                indexes: ['Hello', 'Hi', 'is someone there'],
+                action: (i) => {
+                    artyom.say("Hello, it's me");
+                }
+            },
+            {
+                indexes: ['Repeat after me *'],
+                smart: true,
+                action: (i, wildcard) => {
+                    artyom.say("You've said : " + wildcard);
+                }
+            },
+            // The smart commands support regular expressions
+            {
+                indexes: [/Good Morning/i],
+                smart: true,
+                action: (i, wildcard) => {
+                    artyom.say("You've said : " + wildcard);
+                }
+            },
+            {
+                indexes: ['shut down yourself'],
+                action: (i, wildcard) => {
+                    artyom.fatality().then(() => {
+                        console.log("Artyom succesfully stopped");
+                    });
+                }
+            },
+        ]);
+
+        // Start the commands !
+        artyom.initialize({
+            lang: "en-IN", // GreatBritain english
+            continuous: true, // Listen forever
+            soundex: true,// Use the soundex algorithm to increase accuracy
+            debug: true, // Show messages in the console
+            executionKeyword: "and do it now",
+            listen: true, // Start to listen commands !
+
+            // If providen, you can only trigger a command if you say its name
+            // e.g to trigger Good Morning, you need to say "Jarvis Good Morning"
+            name: "Jarvis"
+        }).then(() => {
+            console.log("Artyom has been succesfully initialized");
+        }).catch((err) => {
+            console.error("Artyom couldn't be initialized: ", err);
+        });
+    </script>-->
+</body>
+</html>

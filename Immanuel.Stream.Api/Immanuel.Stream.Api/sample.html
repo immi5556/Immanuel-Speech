@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8>
+    <title>JS Bin</title>
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script>
+        function SelectText() {
+            //var input = document.getElementById("mytextbox1");
+            //input.focus();
+            //input.setSelectionRange(2, 5);
+
+            var input = document.getElementById("mytextbox1");
+            var ent = input.value.lastIndexOf('\n');
+            var spc = input.value.lastIndexOf(' ');
+            var lidx = ent > spc ? ent : spc;
+            var lnp = input.value.length;
+            input.focus();
+            input.setSelectionRange(lidx + 1, lnp);
+            //var input.value.substr(lidx + 1);
+        }
+
+        function getSelectionText() {
+            var text = "";
+            if (window.getSelection) {
+                text = window.getSelection().toString();
+            } else if (document.selection && document.selection.type != "Control") {
+                text = document.selection.createRange().text;
+            }
+            //alert(text);
+        }
+
+        function deleteSelectionText() {
+            var input = document.getElementById("mytextbox1");
+            var ent = input.value.lastIndexOf('\n');
+            var spc = input.value.lastIndexOf(' ');
+            var lidx = ent > spc ? ent : spc;
+            var lnp = input.value.length;
+            input.focus();
+            input.value = input.value.substr(0, lidx);
+        }
+
+        var backspace = function () {
+            var input = document.getElementById("mytextbox1");
+            var lnp = input.value.length;
+            input.value = input.value.substr(0, lnp - 1);
+        }
+        var selectline = function () {
+            var input = document.getElementById("mytextbox1");
+            var ent = input.value.lastIndexOf('\n');
+            var lnp = input.value.length;
+            input.focus();
+            input.setSelectionRange(ent + 1, lnp);
+        }
+        var uparrow = function () {
+            var printctrl = $("#mytextbox1");
+            var e = jQuery.Event("keyup");
+            e.which = 38;
+            printctrl.focus();
+            printctrl[0].selectionEnd = 7;
+            printctrl.trigger(e);
+            printctrl.trigger(e);
+        }
+        function getCursorPosition(element) {
+            var el = $(element).get(0);
+            var pos = 0;
+            if ('selectionStart' in el) {
+                pos = el.selectionStart;
+            } else if ('selection' in document) {
+                el.focus();
+                var Sel = document.selection.createRange();
+                var SelLength = document.selection.createRange().text.length;
+                Sel.moveStart('character', -el.value.length);
+                pos = Sel.text.length - SelLength;
+            }
+            return pos;
+        }
+    </script>
+</head>
+<body>
+    <p><textarea id="mytextbox1"></textarea></p>
+    <p><input type="text" id="mytextbox" size="20" value="Mozilla" /></p>
+    <p><button onclick="SelectText()">Select text</button></p>
+    <p><button onclick="getSelectionText()">Alert Select text</button></p>
+    <p><button onclick="deleteSelectionText()">Delete Latword</button></p>
+    <p><button onclick="backspace()">Backspace</button></p>
+    <p><button onclick="selectline()">Select Current line</button></p>
+    <p><button onclick="uparrow()">Up Arrow</button></p>
+    <script>
+        $("#mytextbox1").bind("keydown click focus", function () {
+            console.log(getCursorPosition(this));
+        });
+    </script>
+
+</body>
+</html>

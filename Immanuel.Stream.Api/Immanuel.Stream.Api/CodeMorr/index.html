@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="lib/codemirror.css" rel="stylesheet" />
+    <script src="lib/jquery-1.10.2.min.js"></script>
+    <script src="lib/require.min.js"></script>
+    <script src="a7v-cm.js"></script>
+    <title></title>
+</head>
+<body>
+    <div>
+        <textarea id="code"></textarea>
+    </div>
+    <script>
+        require([
+            "lib/codemirror", "lib/htmlmixed/htmlmixed"
+        ], function (CodeMirror) {
+            editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+                lineNumbers: true,
+                mode: "htmlmixed"
+            });
+        });
+    </script>
+</body>
+</html>
