@@ -172,7 +172,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="a7v-html.js" />
     <Content Include="a7v.js" />
+    <Content Include="a7v-text.js" />
     <Content Include="annyang.min.js" />
     <Content Include="App_Data\Exe\Speech.Transform.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -211,6 +213,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="html_template.html" />
+    <Content Include="Key_points.txt" />
     <Content Include="sample.html" />
     <Content Include="Scripts\audio\gumadapter.js" />
     <Content Include="Scripts\audio\MediaStreamRecorder.js" />
@@ -234,6 +237,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Spch_html.html" />
+    <Content Include="Spch_1.html" />
+    <Content Include="Spch_text.html" />
     <Content Include="Spch.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

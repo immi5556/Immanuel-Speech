@@ -10,8 +10,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <_PublishTargetUrl>C:\Immi\Personal\MyProjects\streamapi\_deploy</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="a7v-html.js">
+      <publishTime>10/14/2017 22:53:20</publishTime>
+    </File>
+    <File Include="a7v-text.js">
+      <publishTime>10/13/2017 10:09:00</publishTime>
+    </File>
     <File Include="a7v.js">
-      <publishTime>10/12/2017 14:27:41</publishTime>
+      <publishTime>10/13/2017 10:09:39</publishTime>
     </File>
     <File Include="annyang.min.js">
       <publishTime>10/11/2017 11:23:07</publishTime>
@@ -44,10 +50,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/22/2017 00:35:19</publishTime>
     </File>
     <File Include="bin/Immanuel.Stream.Api.dll">
-      <publishTime>10/12/2017 14:31:03</publishTime>
+      <publishTime>10/14/2017 22:35:19</publishTime>
     </File>
     <File Include="bin/Immanuel.Stream.Api.pdb">
-      <publishTime>10/12/2017 14:31:03</publishTime>
+      <publishTime>10/14/2017 22:35:19</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>12/01/2016 01:37:42</publishTime>
@@ -202,6 +208,81 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/WebGrease.dll">
       <publishTime>09/11/2013 02:58:38</publishTime>
     </File>
+    <File Include="CodeMorr/a7v-cm.js">
+      <publishTime>10/12/2017 17:57:26</publishTime>
+    </File>
+    <File Include="CodeMorr/index.html">
+      <publishTime>10/12/2017 16:21:30</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/codemirror.css">
+      <publishTime>10/12/2017 15:52:30</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/codemirror.js">
+      <publishTime>10/12/2017 15:52:30</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/css/css.js">
+      <publishTime>10/12/2017 15:57:30</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/css/gss.html">
+      <publishTime>10/12/2017 15:57:30</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/css/gss_test.js">
+      <publishTime>10/12/2017 15:57:30</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/css/index.html">
+      <publishTime>10/12/2017 15:57:30</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/css/less.html">
+      <publishTime>10/12/2017 15:57:30</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/css/less_test.js">
+      <publishTime>10/12/2017 15:57:30</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/css/scss.html">
+      <publishTime>10/12/2017 15:57:30</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/css/scss_test.js">
+      <publishTime>10/12/2017 15:57:30</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/css/test.js">
+      <publishTime>10/12/2017 15:57:30</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/htmlmixed/htmlmixed.js">
+      <publishTime>10/12/2017 15:52:15</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/htmlmixed/index.html">
+      <publishTime>10/12/2017 15:52:15</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/javascript/index.html">
+      <publishTime>10/12/2017 15:57:06</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/javascript/javascript.js">
+      <publishTime>10/12/2017 15:57:06</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/javascript/json-ld.html">
+      <publishTime>10/12/2017 15:57:06</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/javascript/test.js">
+      <publishTime>10/12/2017 15:57:06</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/javascript/typescript.html">
+      <publishTime>10/12/2017 15:57:06</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/jquery-1.10.2.min.js">
+      <publishTime>10/12/2017 16:21:23</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/require.min.js">
+      <publishTime>10/12/2017 15:54:45</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/xml/index.html">
+      <publishTime>10/12/2017 15:57:19</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/xml/test.js">
+      <publishTime>10/12/2017 15:57:19</publishTime>
+    </File>
+    <File Include="CodeMorr/lib/xml/xml.js">
+      <publishTime>10/12/2017 15:57:19</publishTime>
+    </File>
     <File Include="Content/bootstrap.css">
       <publishTime>07/19/2017 19:00:41</publishTime>
     </File>
@@ -231,6 +312,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="html_template.html">
       <publishTime>10/12/2017 11:49:16</publishTime>
+    </File>
+    <File Include="Key_points.txt">
+      <publishTime>10/14/2017 19:04:28</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>07/25/2017 20:22:41</publishTime>
@@ -281,7 +365,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/19/2017 19:00:45</publishTime>
     </File>
     <File Include="Spch.html">
-      <publishTime>10/12/2017 11:02:28</publishTime>
+      <publishTime>10/13/2017 10:13:01</publishTime>
+    </File>
+    <File Include="Spch_1.html">
+      <publishTime>10/11/2017 18:29:59</publishTime>
+    </File>
+    <File Include="Spch_html.html">
+      <publishTime>10/13/2017 11:10:02</publishTime>
+    </File>
+    <File Include="Spch_text.html">
+      <publishTime>10/13/2017 10:12:03</publishTime>
     </File>
     <File Include="Views/Home/AudFull.cshtml">
       <publishTime>07/20/2017 14:45:15</publishTime>
@@ -302,7 +395,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/19/2017 19:00:35</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/11/2017 21:13:04</publishTime>
+      <publishTime>10/14/2017 22:35:21</publishTime>
     </File>
   </ItemGroup>
 </Project>
