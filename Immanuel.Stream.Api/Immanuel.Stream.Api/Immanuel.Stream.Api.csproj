@@ -169,6 +169,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\HModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +183,74 @@
     <Content Include="App_Data\Exe\Speech.Transform.pdb" />
     <Content Include="artyom.window.js" />
     <Content Include="CodeMorr\a7v-cm.js" />
+    <Content Include="CodeMorr\addon\comment\comment.js" />
+    <Content Include="CodeMorr\addon\comment\continuecomment.js" />
+    <Content Include="CodeMorr\addon\dialog\dialog.css" />
+    <Content Include="CodeMorr\addon\dialog\dialog.js" />
+    <Content Include="CodeMorr\addon\display\autorefresh.js" />
+    <Content Include="CodeMorr\addon\display\fullscreen.css" />
+    <Content Include="CodeMorr\addon\display\fullscreen.js" />
+    <Content Include="CodeMorr\addon\display\panel.js" />
+    <Content Include="CodeMorr\addon\display\placeholder.js" />
+    <Content Include="CodeMorr\addon\display\rulers.js" />
+    <Content Include="CodeMorr\addon\edit\closebrackets.js" />
+    <Content Include="CodeMorr\addon\edit\closetag.js" />
+    <Content Include="CodeMorr\addon\edit\continuelist.js" />
+    <Content Include="CodeMorr\addon\edit\matchbrackets.js" />
+    <Content Include="CodeMorr\addon\edit\matchtags.js" />
+    <Content Include="CodeMorr\addon\edit\trailingspace.js" />
+    <Content Include="CodeMorr\addon\fold\brace-fold.js" />
+    <Content Include="CodeMorr\addon\fold\comment-fold.js" />
+    <Content Include="CodeMorr\addon\fold\foldcode.js" />
+    <Content Include="CodeMorr\addon\fold\foldgutter.css" />
+    <Content Include="CodeMorr\addon\fold\foldgutter.js" />
+    <Content Include="CodeMorr\addon\fold\indent-fold.js" />
+    <Content Include="CodeMorr\addon\fold\markdown-fold.js" />
+    <Content Include="CodeMorr\addon\fold\xml-fold.js" />
+    <Content Include="CodeMorr\addon\hint\anyword-hint.js" />
+    <Content Include="CodeMorr\addon\hint\css-hint.js" />
+    <Content Include="CodeMorr\addon\hint\html-hint.js" />
+    <Content Include="CodeMorr\addon\hint\javascript-hint.js" />
+    <Content Include="CodeMorr\addon\hint\show-hint.css" />
+    <Content Include="CodeMorr\addon\hint\show-hint.js" />
+    <Content Include="CodeMorr\addon\hint\sql-hint.js" />
+    <Content Include="CodeMorr\addon\hint\xml-hint.js" />
+    <Content Include="CodeMorr\addon\lint\coffeescript-lint.js" />
+    <Content Include="CodeMorr\addon\lint\css-lint.js" />
+    <Content Include="CodeMorr\addon\lint\html-lint.js" />
+    <Content Include="CodeMorr\addon\lint\javascript-lint.js" />
+    <Content Include="CodeMorr\addon\lint\json-lint.js" />
+    <Content Include="CodeMorr\addon\lint\lint.css" />
+    <Content Include="CodeMorr\addon\lint\lint.js" />
+    <Content Include="CodeMorr\addon\lint\yaml-lint.js" />
+    <Content Include="CodeMorr\addon\merge\merge.css" />
+    <Content Include="CodeMorr\addon\merge\merge.js" />
+    <Content Include="CodeMorr\addon\mode\loadmode.js" />
+    <Content Include="CodeMorr\addon\mode\multiplex.js" />
+    <Content Include="CodeMorr\addon\mode\multiplex_test.js" />
+    <Content Include="CodeMorr\addon\mode\overlay.js" />
+    <Content Include="CodeMorr\addon\mode\simple.js" />
+    <Content Include="CodeMorr\addon\runmode\colorize.js" />
+    <Content Include="CodeMorr\addon\runmode\runmode-standalone.js" />
+    <Content Include="CodeMorr\addon\runmode\runmode.js" />
+    <Content Include="CodeMorr\addon\runmode\runmode.node.js" />
+    <Content Include="CodeMorr\addon\scroll\annotatescrollbar.js" />
+    <Content Include="CodeMorr\addon\scroll\scrollpastend.js" />
+    <Content Include="CodeMorr\addon\scroll\simplescrollbars.css" />
+    <Content Include="CodeMorr\addon\scroll\simplescrollbars.js" />
+    <Content Include="CodeMorr\addon\search\jump-to-line.js" />
+    <Content Include="CodeMorr\addon\search\match-highlighter.js" />
+    <Content Include="CodeMorr\addon\search\matchesonscrollbar.css" />
+    <Content Include="CodeMorr\addon\search\matchesonscrollbar.js" />
+    <Content Include="CodeMorr\addon\search\search.js" />
+    <Content Include="CodeMorr\addon\search\searchcursor.js" />
+    <Content Include="CodeMorr\addon\selection\active-line.js" />
+    <Content Include="CodeMorr\addon\selection\mark-selection.js" />
+    <Content Include="CodeMorr\addon\selection\selection-pointer.js" />
+    <Content Include="CodeMorr\addon\tern\tern.css" />
+    <Content Include="CodeMorr\addon\tern\tern.js" />
+    <Content Include="CodeMorr\addon\tern\worker.js" />
+    <Content Include="CodeMorr\addon\wrap\hardwrap.js" />
     <Content Include="CodeMorr\index.html" />
     <Content Include="CodeMorr\lib\codemirror.css" />
     <Content Include="CodeMorr\lib\codemirror.js" />
@@ -203,6 +272,9 @@
     <Content Include="CodeMorr\lib\javascript\typescript.html" />
     <Content Include="CodeMorr\lib\jquery-1.10.2.min.js" />
     <Content Include="CodeMorr\lib\require.min.js" />
+    <Content Include="CodeMorr\lib\utils\formatting.js" />
+    <Content Include="CodeMorr\lib\utils\matchtags.js" />
+    <Content Include="CodeMorr\lib\utils\xml-fold.js" />
     <Content Include="CodeMorr\lib\xml\index.html" />
     <Content Include="CodeMorr\lib\xml\test.js" />
     <Content Include="CodeMorr\lib\xml\xml.js" />
@@ -214,6 +286,17 @@
     <Content Include="Content\Site.css" />
     <Content Include="html_template.html" />
     <Content Include="Key_points.txt" />
+    <Content Include="Resources\bgProgress\bgProgress-v1.0.js" />
+    <Content Include="Resources\bootstrap\bootstrap.css" />
+    <Content Include="Resources\bootstrap\bootstrap.js" />
+    <Content Include="Resources\bootstrap\bootstrap.min.css" />
+    <Content Include="Resources\bootstrap\bootstrap.min.js" />
+    <Content Include="Resources\bootstrap\jquery-slim.min.js" />
+    <Content Include="Resources\bootstrap\popper.min.js" />
+    <Content Include="Resources\jquery\jquery-2.2.4.js" />
+    <Content Include="Resources\jquery\jquery-2.2.4.min.js" />
+    <Content Include="Resources\jquery\jquery-3.2.1.js" />
+    <Content Include="Resources\jquery\jquery-3.2.1.min.js" />
     <Content Include="sample.html" />
     <Content Include="Scripts\audio\gumadapter.js" />
     <Content Include="Scripts\audio\MediaStreamRecorder.js" />
@@ -225,7 +308,10 @@
     <Content Include="App_Data\Exe\Speech.Transform.exe.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="cmd_list.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Resources\resources.json" />
+    <Content Include="Resources\bgProgress\bgProgress-v1.0.css" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -254,10 +340,10 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\AudFull.cshtml" />
+    <Content Include="Views\Home\Preview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Temp\" />
-    <Folder Include="Models\" />
     <Folder Include="Sphx\" />
   </ItemGroup>
   <ItemGroup>

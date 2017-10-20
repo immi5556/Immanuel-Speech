@@ -1,4 +1,28 @@
-﻿var  = function () {
+﻿Points : 
+
+Dicatation	: Value
+equals		: =
+
+Backup Functions: 
+
+//var cursor = editor.getCursor(); // gets the line number in the cursor position
+            //var line = editor.getLine(cursor.line); // get the line contents
+            //var pos = { // create a new object to avoid mutation of the original selection
+            //    line: cursor.line,
+            //    //ch: line.length // set the character position to the end of the line
+            //    //ch: 0, // To the start
+            //    ch: cursor.ch
+            //}
+
+//editor.replaceRange('<' + arg + '></' + arg + '>', pos); // adds a new line
+            //golineup();
+            //selectline();
+            //formathtml();
+
+
+//Templte
+
+var  = function () {
             editor.execCommand("");
         }
 
@@ -56,4 +80,28 @@ indentless: indentless,
 insertsofttab: insertsofttab,
 transposechars: transposechars,
 newlineandindent: newlineandindent,
-toggleoverwrite: toggleoverwrite
+toggleoverwrite: toggleoverwrite,
+
+formathtml: formathtml,
+
+openparenthesis: openparenthesis,
+openparentheses: openparenthesis,
+openbracket: openparenthesis,
+closeparenthesis: closeparenthesis,
+closeparentheses: closeparenthesis,
+closebracket: closeparenthesis
+
+selectelement: selectelement,
+editelement: editelement,
+addattribute:addattribute,
+appendelement: appendelement
+
+singlequote:singlequote,
+singlequotes: singlequotes,
+doublequote: doublequote,
+doublequotes: doublequotes
+
+addmetaresponsive: addmetaresponsive
+
+movelineup: movelineup,
+movelinedown: movelinedown

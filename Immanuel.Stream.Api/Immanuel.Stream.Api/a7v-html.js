@@ -2,7 +2,7 @@
 $(function () {
 
     window.a7v = function (container) {
-
+        var newLine = "\r\n";
         //ui setup
         var parent = undefined;
         if (!container) {
@@ -37,13 +37,14 @@ $(function () {
                     display: "inline-block",
                     backgroundColor: "rgba(128, 128, 128, 0.5)",
                     width: "28%",
-                    height: "95%"
+                    height: "95%",
+                    marginLeft: "10px"
                 });
                 for (var v in cmds) {
                     var $o = $("<option value=" + v + ">" + v + "</option>");
                     $cmds.append($o);
                 }
-                $cmds.on("change", function () {
+                $cmds.on("click", function () {
                     ProcessCommand($(this).val()[0]);
                 });
 
@@ -54,20 +55,14 @@ $(function () {
                 editor = CodeMirror.fromTextArea(printctrl[0], {
                     lineNumbers: true,
                     styleActiveLine: true,
-                    mode: "htmlmixed"
-
+                    mode: "htmlmixed",
+                    matchTags: { bothTags: true }
                 });
                 editor.setSize(null, "100%");
             }
 
             appendCommands();
             BuildHtml();
-        }
-
-        //print
-        var print = function (text) {
-            var tt = printctrl.val() + text;
-            printctrl.val(tt)
         }
 
         //cmds
@@ -94,19 +89,57 @@ $(function () {
         var delwrappedlineright = function () {
             editor.execCommand("delWrappedLineRight");
         }
-        var selectline = function () {
-            var input = printctrl[0];
-            var posstart = input.selectionStart - 1;
-            posstart = posstart > -1 ? posstart : 0;
-            var ent = input.value.lastIndexOf('\n', posstart);
-            var lnp = input.value.indexOf('\n', posstart);
-            lnp = lnp > 0 ? lnp : input.value.length
-            input.focus();
-            input.setSelectionRange(ent + 1, lnp + 1);
+        var movelineup = function () {
+            var startpos = editor.getCursor(true);
+            if (startpos.line < 1) return;
+            startpos.ch = 0;
+            golineend();
+            var endpos = editor.getCursor(true);
+            editor.setSelection(startpos, endpos);
+            var txt = editor.getSelection();
+            deleteline();
+            golineup();
+            golinestart();
+            nextline();
+            golineup();
+            PrintContent(txt);
+        }
+        var movelinedown = function () {
+            var startpos = editor.getCursor(true);
+            var totcnt = editor.lineCount();
+            if (startpos.line >= (totcnt-1)) return;
+            startpos.ch = 0;
+            golineend();
+            var endpos = editor.getCursor(true);
+            editor.setSelection(startpos, endpos);
+            var txt = editor.getSelection();
+            deleteline();
+            golineend();
+            nextline();
+            PrintContent(txt);
+            //editor.replaceSelection('');
+        }
+        var selectline = function (arg) {
+            //arguments = Array.prototype.slice.call(arguments);
+            var args = (arg || '').split(' ').filter(function (itm) { return itm; });
+            var startpos = editor.getCursor(true);
+            startpos.ch = 0;
+            golineend();
+            var endpos = editor.getCursor(true);
+            if (args.length > 0) {
+                var fl = args.filter(function (itm) { return itm > 0 }).map(function (itm) { return parseInt(itm); }).sort();
+                var mn = Math.min.apply(null, fl) - 1;
+                startpos.line = (mn < 0 ? 0 : mn);
+                endpos.line = (Math.max.apply(null, fl) < editor.lineCount() ? Math.max.apply(null, fl) : (editor.lineCount() - 1));
+                gotoline(endpos.line);
+                golineend();
+                endpos = editor.getCursor(true);
+            }
+            editor.setSelection(startpos, endpos);
         }
 
         var focus = function () {
-            printctrl.focus();
+            editor.focus();
         }
 
         var golinestart = function () {
@@ -305,24 +338,64 @@ $(function () {
             PrintContent(";")
         }
 
+        var openparenthesis = function () {
+            PrintContent("(");
+        }
+
+        var openparentheses = function () {
+            openparenthesis();
+        }
+
+        var openbracket = function () {
+            openparenthesis();
+        }
+
+        var closeparenthesis = function () {
+            PrintContent(")");
+        }
+
+        var closeparentheses = function () {
+            closeparenthesis();
+        }
+
+        var closebracket = function () {
+            closeparenthesis();
+        }
+
         var space = function () {
-            PrintContent(" ")
+            PrintContent(" ");
         }
 
         var karma = function () {
-            PrintContent(",")
+            PrintContent(",");
         }
 
         var exclamation = function () {
-            PrintContent("!")
+            PrintContent("!");
         }
 
         var period = function () {
-            PrintContent(". ")
+            PrintContent(".");
+        }
+
+        var singlequote = function () {
+            PrintContent("'");
+        }
+
+        var singlequotes = function () {
+            PrintContent("''");
+        }
+
+        var doublequote = function () {
+            PrintContent('"');
+        }
+
+        var doublequotes = function () {
+            PrintContent('""');
         }
 
         var defaulttab = function () {
-            editor.defaultTab();
+            editor.execCommand("defaultTab");
         }
 
         var tab = function () {
@@ -367,17 +440,183 @@ $(function () {
 
         var gotoline = function (arg) {
             if (arg) {
-                if (!isNaN(parseInt(arg))) {
-                    console.log("Moved to line: " + parseInt(arg));
-                    editor.setCursor(parseInt(arg) - 1, 0);
+                var tnum = TranslateNumbers(arg)
+                if (!isNaN(parseInt(tnum))) {
+                    console.log("Moved to line: " + parseInt(tnum));
+                    editor.setCursor(parseInt(tnum) - 1, 0);
                 }
             }
         }
 
-        var createhtml = function () {
-            GetHtmlTemplate(function (data) {
+        var gotocolumn = function (arg) {
+            if (arg) {
+                if (!isNaN(parseInt(arg))) {
+                    console.log("Moved to column: " + parseInt(arg));
+                    var cp = editor.getCursor();
+                    editor.setCursor(cp.line, parseInt(arg - 1));
+                }
+            }
+        }
+
+
+        // Html tags
+        var createhtml = function (args) {
+            GetHtmlTemplate(args, function (data) {
                 PrintContent(data);
             });
+        }
+
+
+        var createelement = function (arg) {
+            if (!arg) {
+                console.log("[Warning - createElement]: Empty parameter not valid")
+                return;
+            }
+            var args = arg.split(' ');
+            //arg = (arg || '').replace(/ /g, '').toLowerCase();
+            PrintContent(TranslateElement(arg));
+            var pos = editor.getCursor();
+            pos.ch = pos.ch - args[0].length - 3; //</> 3 len
+            editor.setCursor(pos);
+        }
+
+        var selectelement = function () {
+            editor.toMatchingElement(editor)
+        }
+
+        var editelement = function () {
+            var toedithtml = editor.getSelection();
+            if (!toedithtml) {
+                selectelement();
+                toedithtml = editor.getSelection();
+            }
+            if (!IsValidDomText(toedithtml)) {
+                console.log("Invalid Selection for Html Edit");
+                return false;
+            }
+            console.log(toedithtml);
+            return toedithtml;
+        }
+
+        var addattribute = function (arg) {
+            if (arg.length < 1)
+                return;
+            var ehtm = editelement();
+            if (!ehtm)
+                return;
+            var args = (arg || '').split(' ');
+            var attrname = args[0];
+            var attrval = args[1] || "";
+            var els = $(ehtm).attr(attrname, attrval);
+            var torep = els[0].outerHTML;
+            if (!torep) {
+                console.log("Some issue in add addattribute: Happens in body tag, looking for resolution");
+                return;
+            }
+            PrintContent(torep);
+        }
+
+        var addclass = function (arg) {
+            if (arg.length < 1)
+                return;
+            var ehtm = editelement();
+            if (!ehtm)
+                return;
+            var els = $(ehtm).addClass(arg);
+            var torep = els[0].outerHTML;
+            if (!torep) {
+                console.log("Some issue in addclass: Happens in body tag, looking for resolution");
+                return;
+            }
+            PrintContent(torep);
+        }
+
+        var appendelement = function (arg) {
+            if (arg.length < 1)
+                return;
+            var ehtm = editelement();
+            if (!ehtm)
+                return;
+            var args = arg.split(' ');
+            var elem = TranslateElement(arg);
+            var els = $(ehtm).append(elem);
+            var torep = els[0].outerHTML;
+            if (!torep) {
+                console.log("Some issue in appendelement: Happens in body tag, looking for resolution");
+                return;
+            }
+            PrintContent(torep);
+        }
+
+        var addmetaresponsive = function () {
+            PrintContent('<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">');
+        }
+
+        var formathtml = function () {
+            if (!editor.somethingSelected()) {
+                selectall();
+            }
+            var rng = getSelectedRange();
+            editor.autoFormatRange(rng.from, rng.to);
+        }
+
+        var previewhtml = function () {
+
+        }
+
+        //Javascript scopes
+        var addfunction = function (arg) {
+            var fn = '';
+            var args = (arg || '').split(' ');
+            if (args.length)
+                fn = args[0];
+            var fnn = 'function ' + fn + '() { \
+    }';
+            PrintContent(fnn);
+        }
+
+        //Resource tags
+        var addjquery = function (arg) {
+            var args = (arg || '').split(' ');
+            var vers = "latest"
+            if (args.length)
+                vers = args[0];
+            var filt = jsresource.jquery.filter(function (itm) { return itm.version == vers });
+            var ret = (filt && filt.length) ? filt[0] : jsresource.jquery[0];
+            var tag = newLine + "<script type='text/javascript' src='" + ret.path.cdn.minified.script[0] + "'></script>";
+            AppendHtmltoElement("head", tag);
+            //PrintContent(tag);
+
+        }
+
+        var addboostrap = function (arg) {
+            var args = (arg || '').split(' ');
+            var vers = "latest";
+            if (args.length)
+                var vers = args[0];
+            var filt = jsresource.bootstrap.filter(function (itm) { return itm.version == vers });
+            var ret = (filt && filt.length) ? filt[0] : jsresource.bootstrap[0];
+            var tag = newLine + "<link rel='stylesheet' href='" + ret.path.cdn.minified.css[0] + "' crossorigin='anonymous'>";
+            tag += newLine;
+            tag += "<script type='text/javascript' src='" + ret.path.cdn.minified.script[0] + "'></script>" + newLine;
+            //PrintContent(tag);
+            AppendHtmltoElement("head", tag);
+        }
+
+        var addbrahmaprogress = function () {
+
+            var prog = '<section class="loadersGlb loaders-bg-3"> \n' +
+                    '<span id="ldr-prog" class="loader loader-circles"> </span > \n'+
+                '</section>';
+            AppendHtmltoElement("body", prog);
+            AppendHtmltoElement("body", '<script type="text/javascript"> \n//basic usage - bgprogess \n' +
+                '//bg.startProgress(); \n' +
+                '//bg.stopProgress(); \n' +
+                '</script > ');
+            var tag = newLine + '<link rel="stylesheet" href="' + jsresource.bgprogress[0].path.local.dev.css[0] + '" crossorigin="anonymous">';
+            tag += newLine;
+            tag += "<script type='text/javascript' src='" + jsresource.bgprogress[0].path.local.dev.script[0] + "'></script>" + newLine;
+            AppendHtmltoElement("head", tag);
         }
 
         var cmds = {
@@ -396,12 +635,14 @@ $(function () {
             gotoend: godocend,
             godocend: godocend,
             selectline: selectline,
+            selectlines: selectline,
             enter: nextline,
             explain: nextline,
             neckline: nextline,
             nextline: nextline,
             anbu: undo,
             undo: undo,
+            revert: undo,
             redo: redo,
             controlc: controlc,
             copy: controlc,
@@ -416,6 +657,16 @@ $(function () {
             exclamation: exclamation,
             clamation: exclamation,
             period: period,
+            singlequote: singlequote,
+            singlequotes: singlequotes,
+            doublequote: doublequote,
+            doublequotes: doublequotes,
+            openparenthesis: openparenthesis,
+            openparentheses: openparenthesis,
+            openbracket: openparenthesis,
+            closeparenthesis: closeparenthesis,
+            closeparentheses: closeparenthesis,
+            closebracket: closeparenthesis,
             scrolltop: scrolltop,
             scrollup: scrollup,
             scrolldown: scrolldown,
@@ -427,7 +678,12 @@ $(function () {
             letter: letter,
             capitalletter: capitalletter,
             gotoline: gotoline,
+            linenumber: gotoline,
+            gotocolumn: gotocolumn,
+            columnnumber: gotocolumn,
             singleselection: singleselection,
+            movelineup: movelineup,
+            movelinedown: movelinedown,
             killline: killline,
             deleteline: deleteline,
             dellineleft: dellineleft,
@@ -442,6 +698,7 @@ $(function () {
             controlend: godocend,
             golineend: golineend,
             end: golineend,
+            endofline: golineend,
             golineright: golineright,
             golineleft: golineleft,
             golineleftsmart: golineleftsmart,
@@ -480,10 +737,27 @@ $(function () {
             indentless: indentless,
             insertsofttab: insertsofttab,
             transposechars: transposechars,
-            newlineandindent: newlineandindent,
+            newlineindent: newlineandindent,
+            newlinetab: newlineandindent,
+            entertab: newlineandindent,
             toggleoverwrite: toggleoverwrite,
             //HTML Cmds
-            createhtml: createhtml
+            createhtml: createhtml,
+            createelement: createelement,
+            formathtml: formathtml,
+            selectelement: selectelement,
+            editelement: editelement,
+            addattribute: addattribute,
+            addclass: addclass,
+            appendelement: appendelement,
+            addmetaresponsive: addmetaresponsive,
+            previewhtml: previewhtml,
+            //Javascript
+            addfunction: addfunction,
+            //Rresource
+            addjquery: addjquery,
+            addboostrap: addboostrap,
+            addbrahmaprogress: addbrahmaprogress
         }
         init();
 
@@ -528,7 +802,7 @@ $(function () {
         }
 
         var ProcessCommand = function (text) {
-            //var cmd = (text || '').replace(/ /g, '').toLowerCase();
+            text = (text || '').replace(/\n/g, 'enter'); //Minor cleanup
             //if (!procLowToHighCommand(text)) {
             if (!procHightToLowCommand(text)) {
                 PrintContent(text);
@@ -537,8 +811,135 @@ $(function () {
 
         //Utils
 
-        var GetCurrentLineNo = function () {
+        function getSelectedRange() {
+            return { from: editor.getCursor(true), to: editor.getCursor(false) };
+        }
 
+        var toCamelCase = function (str) {
+            return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
+                if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
+                return index == 0 ? match.toLowerCase() : match.toUpperCase();
+            });
+        }
+
+        var IsValidDomText = function (txt) {
+            try {
+                if (txt.indexOf('<') != 0) return false;
+                if (txt.lastIndexOf('>') != (txt.length - 1)) return false;
+                var xx = $(txt);
+                return true;
+            }
+            catch (exp) {
+                return false;
+            }
+        }
+
+        /**
+         * Reset the iFrame content to manipulate the html
+         * @param {string} fhtml - html string
+         * @todo throw error for invalid html format
+         */
+        var ResetiFrame = function (fhtml, tag, html) {
+            var iframe = document.getElementById("ifrm");
+            try {
+                iframe.contentWindow.document.open();
+                iframe.contentWindow.document.write("");
+                iframe.contentWindow.document.close();
+                iframe.contentWindow.document.open();
+                iframe.contentWindow.document.write(fhtml);
+                iframe.contentWindow.document.close();
+            } catch (exp) {
+                console.log("Invalid html format, pls validate before updating");
+            }
+            setTimeout(function () {
+                var cntrls = iframe.contentDocument.getElementsByTagName(tag);
+                var tgs = Array.prototype.slice.call(cntrls);
+                if (!tgs || !tgs.length)
+                    return;
+                (tgs || []).forEach(function (crtl) {
+                    crtl.innerHTML = newLine + crtl.innerHTML + html + newLine;
+                });
+                editor.setValue("<!DOCTYPE html>" + newLine + iframe.contentDocument.getElementsByTagName('html')[0].outerHTML);
+            }, 1000)
+            return iframe;
+        }
+
+        /**
+         * append htmlstring to an element
+         * @param {string} tag - tagname (eg: body, div, script)
+         * @param {string} html - html string to be appended
+         */
+        AppendHtmltoElement = function (tag, html) {
+            var iframe = ResetiFrame(editor.getValue(), tag, html);
+            //var cntrls = iframe.contentDocument.getElementsByTagName(tag);//.append(html);
+            //var tgs = Array.prototype.slice.call(cntrls);
+            //if (!tgs || !tgs.length)
+            //    return;
+            //(tgs || []).forEach(function (crtl) {
+            //    crtl.innerHTML = newLine + crtl.innerHTML + html + newLine;
+            //});
+            //editor.setValue("<!DOCTYPE html>" + newLine + iframe.contentDocument.getElementsByTagName('html')[0].outerHTML);
+        }
+
+        var TranslateElement = function (args) {
+            //arg = (args || '').replace(/ /g, '').toLowerCase();
+            args = args.toLowerCase().split(' ');
+            arg = args[0];
+            var elem = '';
+            if (arg == "script") {
+                elem = '<' + arg + ' type="text/javascript"></' + arg + '>';
+            } else if (arg == "table") {
+                elem = TranslateTableElement(args.slice(1));
+            } else {
+                elem = '<' + arg + '></' + arg + '>';
+            }
+            return elem;
+        }
+
+        var TranslateTableElement = function (arg) {
+            if (!arg || !arg.length)
+                return '<table></table>';
+            var tr = 0; tc = 0, w = -1;
+            w = arg.indexOf("row")
+            if (w > -1 && arg.length > w) {
+                var tnum = TranslateNumbers(arg[w + 1]);
+                if (!isNaN(parseInt(tnum))) {
+                    console.log("Table Row Count: " + parseInt(tnum));
+                    tr = parseInt(tnum);
+                }
+            }
+            w = arg.indexOf("column");
+            if (w > -1 && arg.length > w) {
+                var tnum = TranslateNumbers(arg[w + 1]);
+                if (!isNaN(parseInt(tnum))) {
+                    console.log("Table Column Count: " + parseInt(tnum));
+                    tc = parseInt(tnum);
+                }
+            }
+            var $tbl = $('<table></table>');
+            for (var i = 0; i < tr; i++) {
+                var $tr = $("<tr></tr>");
+                for (j = 0; j < tc; j++) {
+                    $tr.append("<td></td>")
+                }
+                $tbl.append($tr);
+            }
+            return $tbl[0].outerHTML;
+        }
+
+        var TranslateNumbers = function (txt) {
+            var eleven = ".level.lemon.eleven.";
+            var six = ".six.vi.";
+
+            if (!txt) return;
+            var txt = (txt || '').toString().toLowerCase();
+            if (!isNaN(parseInt(txt))) {
+                return txt;
+            }
+            txt = "." + txt + ".";
+            if (eleven.indexOf(txt) > -1) return "11";
+            if (six.indexOf(txt) > -1) return "6";
+            return txt;
         }
 
         var PrintContent = function (content) {
@@ -552,7 +953,7 @@ $(function () {
             }
         }
 
-        var GetHtmlTemplate = function (callback) {
+        var GetHtmlTemplate = function (arg, callback) {
             $.ajax({
                 url: "html_template.html",
                 data: {
@@ -576,12 +977,69 @@ $(function () {
             });
         }
 
+        PostHtml = function (arg, callback) {
+            $.ajax({
+                url: "/Home/Preview",
+                data: {
+                    HString: editor.getValue()
+                },
+                type: "POST",
+                dataType: "html",
+                success: function (data) {
+                    //alert(data);
+                    //printctrl.val(data);
+                    if (callback) {
+                        callback(data);
+                    }
+                    var iframe = document.getElementById("ipr");
+                    try {
+                        iframe.contentWindow.document.open();
+                        iframe.contentWindow.document.write("");
+                        iframe.contentWindow.document.close();
+                        iframe.contentWindow.document.open();
+                        iframe.contentWindow.document.write(data);
+                        iframe.contentWindow.document.close();
+                    } catch (exp) {
+                        console.log("Invalid html format, pls validate before updating");
+                    }
+                    //$("#ipr").html(data);
+                    //$("#prv").show();
+                },
+                error: function (xhr, status) {
+                    alert("Sorry, there was a problem Preview!");
+                },
+                complete: function (xhr, status) {
+                    //$('#showresults').slideDown('slow')
+                }
+            });
+        }
+
         return {
             processCommand: ProcessCommand
         }
     }
 
     //Outer scope
+
+    var loadresources = function (arg, callback) {
+        $.ajax({
+            url: "./Resources/resources.json",
+            data: {
+
+            },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                jsresource = data;
+            },
+            error: function (xhr, status) {
+                alert("Sorry, there was a problem in resource load.!");
+            },
+            complete: function (xhr, status) {
+                //$('#showresults').slideDown('slow')
+            }
+        });
+    }
 
     var translate = function (event) {
         var txtRec = '';
@@ -593,7 +1051,6 @@ $(function () {
 
     var recognition = new webkitSpeechRecognition();
     recognition.lang = "en-IN";
-    var newLine = "\r\n";
     recognition.onresult = function (event) {
         //console.log(event)
         var text = translate(event);
@@ -615,6 +1072,7 @@ $(function () {
         recognition.stop();
         recognition.start();
     }
-    var ww = a7v();
+    ww = a7v("#cmm");
     recognition.start();
+    loadresources();
 });

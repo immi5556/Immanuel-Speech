@@ -1,0 +1,89 @@
+﻿{
+  "jquery": [
+    {
+      "version": "latest",
+      "path": {
+        "local": {
+          "dev": { "script": [ "Resources/jquery/jquery-3.2.1.js" ] },
+          "minified": { "script": [ "Resources/jquery/jquery-3.2.1.min.js" ] }
+        },
+        "cdn": {
+          "dev": { "script": [ "https://code.jquery.com/jquery-3.2.1.js" ] },
+          "minified": { "script": [ "https://code.jquery.com/jquery-3.2.1.min.js" ] }
+        }
+      }
+    },
+    {
+      "version": "3.2.1",
+      "path": {
+        "local": {
+          "dev": { "script": [ "Resources/jquery/jquery-3.2.1.js" ] },
+          "minified": { "script": [ "Resources/jquery/jquery-3.2.1.min.js" ] }
+        },
+        "cdn": {
+          "dev": { "script": [ "https://code.jquery.com/jquery-3.2.1.js" ] },
+          "minified": { "script": [ "https://code.jquery.com/jquery-3.2.1.min.js" ] }
+        }
+      }
+    },
+    {
+      "version": "2.2.4",
+      "path": {
+        "local": {
+          "dev": { "script": [ "Resources/jquery/jquery-2.2.4.js" ] },
+          "minified": { "script": [ "Resources/jquery/jquery-2.2.4.min.js" ] }
+        },
+        "cdn": {
+          "dev": { "script": "https://code.jquery.com/jquery-2.2.4.js" },
+          "minified": { "script": "https://code.jquery.com/jquery-2.2.4.min.js" }
+        }
+      }
+    }
+  ],
+  "bootstrap": [
+    {
+      "version": "latest",
+      "path": {
+        "local": {
+          "dev": {
+            "script": [ "Resources/bootstrap/bootstrap.js" ],
+            "css": [ "Resources/bootstrap/bootstrap.css" ]
+          },
+          "minified": {
+            "script": [ "Resources/bootstrap/bootstrap.min.js" ],
+            "css": [ "Resources/bootstrap/bootstrap.min.css" ]
+          }
+        },
+        "cdn": {
+          "dev": {
+            "script": [ "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.js" ],
+            "css": [ "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.css" ]
+          },
+          "minified": {
+            "script": [ "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" ],
+            "css": [ "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" ]
+          }
+        }
+      }
+    }
+  ],
+  "bgprogress": [
+    {
+      "version": "latest",
+      "path": {
+        "local": {
+          "dev": {
+            "script": [ "Resources/bgProgress/bgProgress-v1.0.js" ],
+            "css": [ "Resources/bgProgress/bgProgress-v1.0.css" ]
+          }
+        },
+        "cdn": {
+          "dev": {
+            "script": [ "https://xsfood.org/audio/Resources/bgProgress/bgProgress-v1.0.js" ],
+            "css": [ "https://xsfood.org/audio/Resources/bgProgress/bgProgress-v1.0.css" ]
+          }
+        }
+      }
+    }
+  ]
+}

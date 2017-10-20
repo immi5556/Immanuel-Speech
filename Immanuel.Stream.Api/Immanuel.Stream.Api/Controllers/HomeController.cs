@@ -17,5 +17,13 @@ namespace Immanuel.Stream.Api.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult Preview(Models.HModel model)
+        {
+            ViewBag.Html = model;
+            return View();
+        }
     }
 }

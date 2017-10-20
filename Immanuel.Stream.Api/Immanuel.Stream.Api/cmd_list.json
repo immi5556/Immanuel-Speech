@@ -1,0 +1,14 @@
+﻿{
+  "selection": [
+    {
+      "name": "Select All",
+      "pckb": "ctrl+a",
+      "mackb": "cmd+a",
+      "icon": "",
+      "desc":  "This command is used to select all content in the editor",
+      "voice": [
+        { "text": "Select All" }
+      ]
+    }
+  ]
+}
