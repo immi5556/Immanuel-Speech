@@ -40,10 +40,15 @@ $(function () {
                     height: "95%",
                     marginLeft: "10px"
                 });
+                var ppr = [];
                 for (var v in cmds) {
+                    ppr.push(v);
+                }
+                ppr.sort();
+                ppr.forEach(function (v) {
                     var $o = $("<option value=" + v + ">" + v + "</option>");
                     $cmds.append($o);
-                }
+                })
                 $cmds.on("click", function () {
                     ProcessCommand($(this).val()[0]);
                 });
@@ -107,7 +112,7 @@ $(function () {
         var movelinedown = function () {
             var startpos = editor.getCursor(true);
             var totcnt = editor.lineCount();
-            if (startpos.line >= (totcnt-1)) return;
+            if (startpos.line >= (totcnt - 1)) return;
             startpos.ch = 0;
             golineend();
             var endpos = editor.getCursor(true);
@@ -480,6 +485,19 @@ $(function () {
             editor.setCursor(pos);
         }
 
+        var closeelement = function (arg) {
+            if (!arg) {
+                console.log("[Warning - closeElement]: Empty parameter not valid")
+                return;
+            }
+            var args = arg.split(' ');
+            //arg = (arg || '').replace(/ /g, '').toLowerCase();
+            PrintContent('</' + arg + '>');
+            var pos = editor.getCursor();
+            pos.ch = pos.ch - args[0].length - 3; //</> 3 len
+            editor.setCursor(pos);
+        }
+
         var selectelement = function () {
             editor.toMatchingElement(editor)
         }
@@ -583,30 +601,29 @@ $(function () {
                 vers = args[0];
             var filt = jsresource.jquery.filter(function (itm) { return itm.version == vers });
             var ret = (filt && filt.length) ? filt[0] : jsresource.jquery[0];
-            var tag = newLine + "<script type='text/javascript' src='" + ret.path.cdn.minified.script[0] + "'></script>";
-            AppendHtmltoElement("head", tag);
-            //PrintContent(tag);
-
+            var tag = "<script type='text/javascript' src='" + ret.path.cdn.minified.script[0] + "'></script>" + newLine;
+            //AppendHtmltoElement("head", tag);
+            PrintContent(tag);
         }
 
-        var addboostrap = function (arg) {
+        var addbootstrap = function (arg) {
             var args = (arg || '').split(' ');
             var vers = "latest";
             if (args.length)
                 var vers = args[0];
             var filt = jsresource.bootstrap.filter(function (itm) { return itm.version == vers });
             var ret = (filt && filt.length) ? filt[0] : jsresource.bootstrap[0];
-            var tag = newLine + "<link rel='stylesheet' href='" + ret.path.cdn.minified.css[0] + "' crossorigin='anonymous'>";
-            tag += newLine;
-            tag += "<script type='text/javascript' src='" + ret.path.cdn.minified.script[0] + "'></script>" + newLine;
-            //PrintContent(tag);
-            AppendHtmltoElement("head", tag);
+            //var tag = "<link rel='stylesheet' href='" + ret.path.cdn.minified.css[0] + "' crossorigin='anonymous'>";
+            //tag += newLine;
+            var tag = "<script type='text/javascript' src='" + ret.path.cdn.minified.script[0] + "'></script>" + newLine;
+            PrintContent(tag);
+            //AppendHtmltoElement("head", tag);
         }
 
         var addbrahmaprogress = function () {
 
             var prog = '<section class="loadersGlb loaders-bg-3"> \n' +
-                    '<span id="ldr-prog" class="loader loader-circles"> </span > \n'+
+                '<span id="ldr-prog" class="loader loader-circles"> </span > \n' +
                 '</section>';
             AppendHtmltoElement("body", prog);
             AppendHtmltoElement("body", '<script type="text/javascript"> \n//basic usage - bgprogess \n' +
@@ -621,419 +638,765 @@ $(function () {
 
         var cmds = {
             //Regular Commands
-            selectall: selectall,
-            deleteall: deleteall,
-            tellit: deletes,
-            delete: deletes,
-            deleteword: deleteword,
-            backspace: backspace,
-            focus: focus,
-            controlhome: godocstart,
-            gotostart: godocstart,
-            godocstart: godocstart,
-            controlend: godocend,
-            gotoend: godocend,
-            godocend: godocend,
-            selectline: selectline,
-            selectlines: selectline,
-            enter: nextline,
-            explain: nextline,
-            neckline: nextline,
-            nextline: nextline,
-            anbu: undo,
-            undo: undo,
-            revert: undo,
-            redo: redo,
-            controlc: controlc,
-            copy: controlc,
-            controlx: controlx,
-            cut: controlx,
-            controlv: controlv,
-            paste: controlv,
-            semicolon: semicolon,
-            space: space,
-            karma: karma,
-            comma: karma,
-            exclamation: exclamation,
-            clamation: exclamation,
-            period: period,
-            singlequote: singlequote,
-            singlequotes: singlequotes,
-            doublequote: doublequote,
-            doublequotes: doublequotes,
-            openparenthesis: openparenthesis,
-            openparentheses: openparenthesis,
-            openbracket: openparenthesis,
-            closeparenthesis: closeparenthesis,
-            closeparentheses: closeparenthesis,
-            closebracket: closeparenthesis,
-            scrolltop: scrolltop,
-            scrollup: scrollup,
-            scrolldown: scrolldown,
-            scrollbottom: scrollbottom,
-            scrollright: scrollright,
-            scrollend: scrollend,
-            scrollhome: scrollhome,
-            scrollleft: scrollleft,
-            letter: letter,
-            capitalletter: capitalletter,
-            gotoline: gotoline,
-            linenumber: gotoline,
-            gotocolumn: gotocolumn,
-            columnnumber: gotocolumn,
-            singleselection: singleselection,
-            movelineup: movelineup,
-            movelinedown: movelinedown,
-            killline: killline,
-            deleteline: deleteline,
-            dellineleft: dellineleft,
-            delwrappedlineleft: delwrappedlineleft,
-            delwrappedlineright: delwrappedlineright,
-            undoselection: undoselection,
-            redoselection: redoselection,
-            golinestart: golinestart,
-            home: golinestart,
-            smarthome: golinestartsmart,
-            controlhome: godocstart,
-            controlend: godocend,
-            golineend: golineend,
-            end: golineend,
-            endofline: golineend,
-            golineright: golineright,
-            golineleft: golineleft,
-            golineleftsmart: golineleftsmart,
-            golineup: golineup,
-            uparrow: golineup,
-            apparel: golineup,
-            narrow: golinedown,
-            golinedown: golinedown,
-            downarrow: golinedown,
-            gopageup: gopageup,
-            pageup: gopageup,
-            gopagedown: gopagedown,
-            pagedown: gopagedown,
-            gocharleft: gocharleft,
-            leftarrow: gocharleft,
-            gocharright: gocharright,
-            rightarrow: gocharright,
-            gocolumnleft: gocolumnleft,
-            gocolumnright: gocolumnright,
-            gowordleft: gowordleft,
-            controlleftarrow: gowordleft,
-            gowordright: gowordright,
-            controlrightarrow: gowordright,
-            gogroupleft: gogroupleft,
-            gogroupright: gogroupright,
-            delcharbefore: delcharbefore,
-            delcharafter: delcharafter,
-            deletes: delcharafter,
-            defaulttab: defaulttab,
-            tab: defaulttab,
-            delwordafter: delwordafter,
-            delgroupbefore: delgroupbefore,
-            delgroupafter: delgroupafter,
-            indentauto: indentauto,
-            indentmore: indentmore,
-            indentless: indentless,
-            insertsofttab: insertsofttab,
-            transposechars: transposechars,
-            newlineindent: newlineandindent,
-            newlinetab: newlineandindent,
-            entertab: newlineandindent,
-            toggleoverwrite: toggleoverwrite,
+            selectall: {
+                fn: selectall,
+                desc: 'Select All'
+            },
+            deleteall: {
+                fn: deleteall,
+                desc: ''
+            },
+            tellit: {
+                fn: deletes,
+                desc: ''
+            },
+            delete: {
+                fn: deletes,
+                desc: ''
+            },
+            deleteword: {
+                fn: deleteword,
+                desc: ''
+            },
+            backspace: {
+                fn: backspace,
+                desc: ''
+            },
+            focus: {
+                fn: focus,
+                desc: ''
+            },
+            controlhome: {
+                fn: godocstart,
+                desc: ''
+            },
+            gotostart: {
+                fn: godocstart,
+                desc: ''
+            },
+            godocstart: {
+                fn: godocstart,
+                desc: ''
+            },
+            controlend: {
+                fn: godocend,
+                desc: ''
+            },
+            gotoend: {
+                fn: godocend,
+                desc: ''
+            },
+            godocend: {
+                fn: godocend,
+                desc: ''
+            },
+            selectline: {
+                fn: selectline,
+                desc: ''
+            },
+            selectlines: {
+                fn: selectline,
+                desc: ''
+            },
+            enter: {
+                fn: nextline,
+                desc: ''
+            },
+            explain: {
+                fn: nextline,
+                desc: ''
+            },
+            neckline: {
+                fn: nextline,
+                desc: ''
+            },
+            nextline: {
+                fn: nextline,
+                desc: ''
+            },
+            anbu: {
+                fn: undo,
+                desc: ''
+            },
+            undo: {
+                fn: undo,
+                desc: ''
+            },
+            revert: {
+                fn: undo,
+                desc: ''
+            },
+            redo: {
+                fn: redo,
+                desc: ''
+            },
+            controlc: {
+                fn: controlc,
+                desc: ''
+            },
+            copy: {
+                fn: controlc,
+                desc: ''
+            },
+            controlx: {
+                fn: controlx,
+                desc: ''
+            },
+            cut: {
+                fn: controlx,
+                desc: ''
+            },
+            controlv: {
+                fn: controlv,
+                desc: ''
+            },
+            paste: {
+                fn: controlv,
+                desc: ''
+            },
+            semicolon: {
+                fn: semicolon,
+                desc: ''
+            },
+            space: {
+                fn: space,
+                desc: ''
+            },
+            karma: {
+                fn: karma,
+                desc: ''
+            },
+            comma: {
+                fn: karma,
+                desc: ''
+            },
+            exclamation: {
+                fn: exclamation,
+                desc: ''
+            },
+            clamation: {
+                fn: exclamation,
+                desc: ''
+            },
+            period: {
+                fn: period,
+                desc: ''
+            },
+            singlequote: {
+                fn: singlequote,
+                desc: ''
+            },
+            singlequotes: {
+                fn: singlequotes,
+                desc: ''
+            },
+            doublequote: {
+                fn: doublequote,
+                desc: ''
+            },
+            doublequotes: {
+                fn: doublequotes,
+                desc: ''
+            },
+            openparenthesis: {
+                fn: openparenthesis,
+                desc: ''
+            },
+            openparentheses: {
+                fn: openparenthesis,
+                desc: ''
+            },
+            openbracket: {
+                fn: openparenthesis,
+                desc: ''
+            },
+            closeparenthesis: {
+                fn: closeparenthesis,
+                desc: ''
+            },
+            closeparentheses: {
+                fn: closeparenthesis,
+                desc: ''
+            },
+            closebracket: {
+                fn: closeparenthesis,
+                desc: ''
+            },
+            scrolltop: {
+                fn: scrolltop,
+                desc: ''
+            },
+            scrollup: {
+                fn: scrollup,
+                desc: ''
+            },
+            scrolldown: {
+                fn: scrolldown,
+                desc: ''
+            },
+            scrollbottom: {
+                fn: scrollbottom,
+                desc: ''
+            },
+            scrollright: {
+                fn: scrollright,
+                desc: ''
+            },
+            scrollend: {
+                fn: scrollend,
+                desc: ''
+            },
+            scrollhome: {
+                fn: scrollhome,
+                desc: ''
+            },
+            scrollleft: {
+                fn: scrollleft,
+                desc: ''
+            },
+            letter: {
+                fn: letter,
+                desc: ''
+            },
+            capitalletter: {
+                fn: capitalletter,
+                desc: ''
+            },
+            gotoline: {
+                fn: gotoline,
+                desc: ''
+            },
+            linenumber: {
+                fn: gotoline,
+                desc: ''
+            },
+            gotocolumn: {
+                fn: gotocolumn,
+                desc: ''
+            },
+            columnnumber: {
+                fn: gotocolumn,
+                desc: ''
+            },
+            singleselection: {
+                fn: singleselection,
+                desc: ''
+            },
+            movelineup: {
+                fn: movelineup,
+                desc: ''
+            },
+            movelinedown: {
+                fn: movelinedown,
+                desc: ''
+            },
+            killline: {
+                fn: killline,
+                desc: ''
+            },
+            deleteline: {
+                fn: deleteline,
+                desc: ''
+            },
+            dellineleft: {
+                fn: dellineleft,
+                desc: ''
+            },
+            delwrappedlineleft: {
+                fn: delwrappedlineleft,
+                desc: ''
+            },
+            delwrappedlineright: {
+                fn: delwrappedlineright,
+                desc: ''
+            },
+            undoselection: {
+                fn: undoselection,
+                desc: ''
+            },
+            redoselection: {
+                fn: redoselection,
+                desc: ''
+            },
+            golinestart: {
+                fn: golinestart,
+                desc: ''
+            },
+            home: {
+                fn: golinestart,
+                desc: ''
+            },
+            smarthome: {
+                fn: golinestartsmart,
+                desc: ''
+            },
+            controlhome: {
+                fn: godocstart,
+                desc: ''
+            },
+            controlend: {
+                fn: godocend,
+                desc: ''
+            },
+            golineend: {
+                fn: golineend,
+                desc: ''
+            },
+            end: {
+                fn: golineend,
+                desc: ''
+            },
+            endofline: {
+                fn: golineend,
+                desc: ''
+            },
+            golineright: {
+                fn: golineright,
+                desc: ''
+            },
+            golineleft: {
+                fn: golineleft,
+                desc: ''
+            },
+            golineleftsmart: {
+                fn: golineleftsmart,
+                desc: ''
+            },
+            golineup: {
+                fn: golineup,
+                desc: ''
+            },
+            uparrow: {
+                fn: golineup,
+                desc: ''
+            },
+            apparel: {
+                fn: golineup,
+                desc: ''
+            },
+            narrow: {
+                fn: golinedown,
+                desc: ''
+            },
+            golinedown: {
+                fn: golinedown,
+                desc: ''
+            },
+            downarrow: {
+                fn: golinedown,
+                desc: ''
+            },
+            gopageup: {
+                fn: gopageup,
+                desc: ''
+            },
+            pageup: {
+                fn: gopageup,
+                desc: ''
+            },
+            gopagedown: {
+                fn: gopagedown,
+                desc: ''
+            },
+            pagedown: {
+                fn: gopagedown,
+                desc: ''
+            },
+            gocharleft: {
+                fn: gocharleft,
+                desc: ''
+            },
+            leftarrow: {
+                fn: gocharleft,
+                desc: ''
+            },
+            gocharright: {
+                fn: gocharright,
+                desc: ''
+            },
+            rightarrow: {
+                fn: gocharright,
+                desc: ''
+            },
+            gocolumnleft: {
+                fn: gocolumnleft,
+                desc: ''
+            },
+            gocolumnright: {
+                fn: gocolumnright,
+                desc: ''
+            },
+            gowordleft: {
+                fn: gowordleft,
+                desc: ''
+            },
+            controlleftarrow: {
+                fn: gowordleft,
+                desc: ''
+            },
+            gowordright: {
+                fn: gowordright,
+                desc: ''
+            },
+            controlrightarrow: {
+                fn: gowordright,
+                desc: ''
+            },
+            gogroupleft: {
+                fn: gogroupleft,
+                desc: ''
+            },
+            gogroupright: {
+                fn: gogroupright,
+                desc: ''
+            },
+            delcharbefore: {
+                fn: delcharbefore,
+                desc: ''
+            },
+            delcharafter: {
+                fn: delcharafter,
+                desc: ''
+            },
+            deletes: {
+                fn: delcharafter,
+                desc: ''
+            },
+            defaulttab: {
+                fn: defaulttab,
+                desc: ''
+            },
+            tab: {
+                fn: defaulttab,
+                desc: ''
+            },
+            delwordafter: {
+                fn: delwordafter,
+                desc: ''
+            },
+            delgroupbefore: {
+                fn: delgroupbefore,
+                desc: ''
+            },
+            delgroupafter: {
+                fn: delgroupafter,
+                desc: ''
+            },
+            indentauto: {
+                fn: indentauto,
+                desc: ''
+            },
+            indentmore: {
+                fn: indentmore,
+                desc: ''
+            },
+            indentless: {
+                fn: indentless,
+                desc: ''
+            },
+            insertsofttab: {
+                fn: insertsofttab,
+                desc: ''
+            },
+            transposechars: {
+                fn: transposechars,
+                desc: ''
+            },
+            newlineindent: {
+                fn: newlineandindent,
+                desc: ''
+            },
+            newlinetab: {
+                fn: newlineandindent,
+                desc: ''
+            },
+            entertab: {
+                fn: newlineandindent,
+                desc: ''
+            },
+            toggleoverwrite: {
+                fn: toggleoverwrite,
+                desc: ''
+            },
             //HTML Cmds
-            createhtml: createhtml,
-            createelement: createelement,
-            formathtml: formathtml,
-            selectelement: selectelement,
-            editelement: editelement,
-            addattribute: addattribute,
-            addclass: addclass,
-            appendelement: appendelement,
-            addmetaresponsive: addmetaresponsive,
-            previewhtml: previewhtml,
+            createhtml: {
+                fn: createhtml,
+                desc: ''
+            },
+            createelement: {
+                fn: createelement,
+                desc: ''
+            },
+            closeelement: {
+                fn: closeelement,
+                desc:'Close Element !elemenetName'
+            },
+            formathtml: {
+                fn: formathtml,
+                desc: ''
+            },
+            selectelement: {
+                fn: selectelement,
+                desc: ''
+            },
+            editelement: {
+                fn: editelement,
+                desc: ''
+            },
+            addattribute: {
+                fn: addattribute,
+                desc: ''
+            },
+            addclass: {
+                fn: addclass,
+                desc: ''
+            },
+            appendelement: {
+                fn: appendelement,
+                desc: ''
+            },
+            addmetaresponsive: {
+                fn: addmetaresponsive,
+                desc: ''
+            },
+            previewhtml: {
+                fn: previewhtml,
+                desc: ''
+            },
             //Javascript
-            addfunction: addfunction,
+            addfunction: {
+                fn: addfunction,
+                desc: ''
+            },
             //Rresource
-            addjquery: addjquery,
-            addboostrap: addboostrap,
-            addbrahmaprogress: addbrahmaprogress
+            addjquery: {
+                fn: addjquery,
+                desc: ''
+            },
+            addbootstrap: {
+                fn: addbootstrap,
+                desc: ''
+            },
+            addbrahmaprogress: {
+                fn: addbrahmaprogress,
+                desc: ''
+            }
         }
         init();
 
         var procLowToHighCommand = function (text) {
-            var lst = (text || '').split(' ');
-            var iscmd = false;
-            var cmdvalidate = function (cmd, val, idx, arr) {
-                cmd = cmd + val;
-                cmd = (cmd || '').toLowerCase();
-                if (!iscmd && cmds[cmd]) {
-                    var pars = undefined;
-                    if (arr.length > idx + 1) {
-                        pars = arr.slice(idx + 1).join(' ');
+                var lst = (text || '').split(' ');
+                var iscmd = false;
+                var cmdvalidate = function (cmd, val, idx, arr) {
+                    cmd = cmd + val;
+                    cmd = (cmd || '').toLowerCase();
+                    if (!iscmd && cmds[cmd]) {
+                        var pars = undefined;
+                        if (arr.length > idx + 1) {
+                            pars = arr.slice(idx + 1).join(' ');
+                        }
+                        console.log("Command: " + text + ", Arguments : " + (pars || 'Nil'));
+                        cmds[cmd](pars)
+                        iscmd = true;
                     }
-                    console.log("Command: " + text + ", Arguments : " + (pars || 'Nil'));
-                    cmds[cmd](pars)
-                    iscmd = true;
+                    return cmd;
                 }
-                return cmd;
+                lst.reduce(cmdvalidate, '');
+                return iscmd;
             }
-            lst.reduce(cmdvalidate, '');
-            return iscmd;
-        }
 
         var procHightToLowCommand = function (text) {
-            var lst1 = (text || '').split(' ');
-            var lst2 = (text || '').split(' ')
-            var iscmd = false;
-            var i = 0;
-            while ((a = lst1.pop()) != undefined) {
-                var cmd = lst1.join('') + a;
-                cmd = (cmd || '').toLowerCase();
-                if (!iscmd && cmds[cmd]) {
-                    var pars = lst2.slice(lst1.length + 1).join(' ');
-                    console.log("Command: " + cmd + ", Arguments : " + (pars || 'Nil'));
-                    cmds[cmd](pars)
-                    iscmd = true;
+                var lst1 = (text || '').split(' ');
+                var lst2 = (text || '').split(' ')
+                var iscmd = false;
+                var i = 0;
+                while ((a = lst1.pop()) != undefined) {
+                    var cmd = lst1.join('') + a;
+                    cmd = (cmd || '').toLowerCase();
+                    if (!iscmd && cmds[cmd]) {
+                        var pars = lst2.slice(lst1.length + 1).join(' ');
+                        console.log("Command: " + cmd + ", Arguments : " + (pars || 'Nil'));
+                        if (cmds[cmd] && cmds[cmd].fn && (typeof cmds[cmd].fn == 'function')) {
+                            cmds[cmd].fn(pars)
+                        } else {
+                            cmds[cmd](pars)
+                        }
+                        iscmd = true;
+                    }
                 }
-            }
 
-            return iscmd;
-        }
+                return iscmd;
+            }
 
         var ProcessCommand = function (text) {
-            text = (text || '').replace(/\n/g, 'enter'); //Minor cleanup
-            //if (!procLowToHighCommand(text)) {
-            if (!procHightToLowCommand(text)) {
-                PrintContent(text);
+                text = (text || '').replace(/\n/g, 'enter'); //Minor cleanup
+                //if (!procLowToHighCommand(text)) {
+                if (!procHightToLowCommand(text)) {
+                    PrintContent(text);
+                }
             }
-        }
 
         //Utils
 
         function getSelectedRange() {
-            return { from: editor.getCursor(true), to: editor.getCursor(false) };
+                return { from: editor.getCursor(true), to: editor.getCursor(false) };
+    }
+
+    var toCamelCase = function (str) {
+        return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
+            if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
+            return index == 0 ? match.toLowerCase() : match.toUpperCase();
+        });
+    }
+
+    var IsValidDomText = function (txt) {
+        try {
+            if (txt.indexOf('<') != 0) return false;
+            if (txt.lastIndexOf('>') != (txt.length - 1)) return false;
+            var xx = $(txt);
+            return true;
         }
-
-        var toCamelCase = function (str) {
-            return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
-                if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
-                return index == 0 ? match.toLowerCase() : match.toUpperCase();
-            });
-        }
-
-        var IsValidDomText = function (txt) {
-            try {
-                if (txt.indexOf('<') != 0) return false;
-                if (txt.lastIndexOf('>') != (txt.length - 1)) return false;
-                var xx = $(txt);
-                return true;
-            }
-            catch (exp) {
-                return false;
-            }
-        }
-
-        /**
-         * Reset the iFrame content to manipulate the html
-         * @param {string} fhtml - html string
-         * @todo throw error for invalid html format
-         */
-        var ResetiFrame = function (fhtml, tag, html) {
-            var iframe = document.getElementById("ifrm");
-            try {
-                iframe.contentWindow.document.open();
-                iframe.contentWindow.document.write("");
-                iframe.contentWindow.document.close();
-                iframe.contentWindow.document.open();
-                iframe.contentWindow.document.write(fhtml);
-                iframe.contentWindow.document.close();
-            } catch (exp) {
-                console.log("Invalid html format, pls validate before updating");
-            }
-            setTimeout(function () {
-                var cntrls = iframe.contentDocument.getElementsByTagName(tag);
-                var tgs = Array.prototype.slice.call(cntrls);
-                if (!tgs || !tgs.length)
-                    return;
-                (tgs || []).forEach(function (crtl) {
-                    crtl.innerHTML = newLine + crtl.innerHTML + html + newLine;
-                });
-                editor.setValue("<!DOCTYPE html>" + newLine + iframe.contentDocument.getElementsByTagName('html')[0].outerHTML);
-            }, 1000)
-            return iframe;
-        }
-
-        /**
-         * append htmlstring to an element
-         * @param {string} tag - tagname (eg: body, div, script)
-         * @param {string} html - html string to be appended
-         */
-        AppendHtmltoElement = function (tag, html) {
-            var iframe = ResetiFrame(editor.getValue(), tag, html);
-            //var cntrls = iframe.contentDocument.getElementsByTagName(tag);//.append(html);
-            //var tgs = Array.prototype.slice.call(cntrls);
-            //if (!tgs || !tgs.length)
-            //    return;
-            //(tgs || []).forEach(function (crtl) {
-            //    crtl.innerHTML = newLine + crtl.innerHTML + html + newLine;
-            //});
-            //editor.setValue("<!DOCTYPE html>" + newLine + iframe.contentDocument.getElementsByTagName('html')[0].outerHTML);
-        }
-
-        var TranslateElement = function (args) {
-            //arg = (args || '').replace(/ /g, '').toLowerCase();
-            args = args.toLowerCase().split(' ');
-            arg = args[0];
-            var elem = '';
-            if (arg == "script") {
-                elem = '<' + arg + ' type="text/javascript"></' + arg + '>';
-            } else if (arg == "table") {
-                elem = TranslateTableElement(args.slice(1));
-            } else {
-                elem = '<' + arg + '></' + arg + '>';
-            }
-            return elem;
-        }
-
-        var TranslateTableElement = function (arg) {
-            if (!arg || !arg.length)
-                return '<table></table>';
-            var tr = 0; tc = 0, w = -1;
-            w = arg.indexOf("row")
-            if (w > -1 && arg.length > w) {
-                var tnum = TranslateNumbers(arg[w + 1]);
-                if (!isNaN(parseInt(tnum))) {
-                    console.log("Table Row Count: " + parseInt(tnum));
-                    tr = parseInt(tnum);
-                }
-            }
-            w = arg.indexOf("column");
-            if (w > -1 && arg.length > w) {
-                var tnum = TranslateNumbers(arg[w + 1]);
-                if (!isNaN(parseInt(tnum))) {
-                    console.log("Table Column Count: " + parseInt(tnum));
-                    tc = parseInt(tnum);
-                }
-            }
-            var $tbl = $('<table></table>');
-            for (var i = 0; i < tr; i++) {
-                var $tr = $("<tr></tr>");
-                for (j = 0; j < tc; j++) {
-                    $tr.append("<td></td>")
-                }
-                $tbl.append($tr);
-            }
-            return $tbl[0].outerHTML;
-        }
-
-        var TranslateNumbers = function (txt) {
-            var eleven = ".level.lemon.eleven.";
-            var six = ".six.vi.";
-
-            if (!txt) return;
-            var txt = (txt || '').toString().toLowerCase();
-            if (!isNaN(parseInt(txt))) {
-                return txt;
-            }
-            txt = "." + txt + ".";
-            if (eleven.indexOf(txt) > -1) return "11";
-            if (six.indexOf(txt) > -1) return "6";
-            return txt;
-        }
-
-        var PrintContent = function (content) {
-            var selection = editor.getSelection();
-            if (selection.length > 0) {
-                editor.replaceSelection(content);
-            }
-            else {
-                var cursor = editor.getCursor();
-                editor.replaceRange(content, cursor);
-            }
-        }
-
-        var GetHtmlTemplate = function (arg, callback) {
-            $.ajax({
-                url: "html_template.html",
-                data: {
-                    txtsearch: $('#appendedInputButton').val()
-                },
-                type: "GET",
-                dataType: "html",
-                success: function (data) {
-                    //alert(data);
-                    //printctrl.val(data);
-                    if (callback) {
-                        callback(data);
-                    }
-                },
-                error: function (xhr, status) {
-                    alert("Sorry, there was a problem!");
-                },
-                complete: function (xhr, status) {
-                    //$('#showresults').slideDown('slow')
-                }
-            });
-        }
-
-        PostHtml = function (arg, callback) {
-            $.ajax({
-                url: "/Home/Preview",
-                data: {
-                    HString: editor.getValue()
-                },
-                type: "POST",
-                dataType: "html",
-                success: function (data) {
-                    //alert(data);
-                    //printctrl.val(data);
-                    if (callback) {
-                        callback(data);
-                    }
-                    var iframe = document.getElementById("ipr");
-                    try {
-                        iframe.contentWindow.document.open();
-                        iframe.contentWindow.document.write("");
-                        iframe.contentWindow.document.close();
-                        iframe.contentWindow.document.open();
-                        iframe.contentWindow.document.write(data);
-                        iframe.contentWindow.document.close();
-                    } catch (exp) {
-                        console.log("Invalid html format, pls validate before updating");
-                    }
-                    //$("#ipr").html(data);
-                    //$("#prv").show();
-                },
-                error: function (xhr, status) {
-                    alert("Sorry, there was a problem Preview!");
-                },
-                complete: function (xhr, status) {
-                    //$('#showresults').slideDown('slow')
-                }
-            });
-        }
-
-        return {
-            processCommand: ProcessCommand
+        catch (exp) {
+            return false;
         }
     }
 
-    //Outer scope
+    /**
+     * Reset the iFrame content to manipulate the html
+     * @param {string} fhtml - html string
+     * @todo throw error for invalid html format
+     */
+    var ResetiFrame = function (fhtml, tag, html) {
+        var iframe = document.getElementById("ifrm");
+        try {
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write("");
+            iframe.contentWindow.document.close();
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write(fhtml);
+            iframe.contentWindow.document.close();
+        } catch (exp) {
+            console.log("Invalid html format, pls validate before updating");
+        }
+        setTimeout(function () {
+            var cntrls = iframe.contentDocument.getElementsByTagName(tag);
+            var tgs = Array.prototype.slice.call(cntrls);
+            if (!tgs || !tgs.length)
+                return;
+            (tgs || []).forEach(function (crtl) {
+                crtl.innerHTML = newLine + crtl.innerHTML + html + newLine;
+            });
+            editor.setValue("<!DOCTYPE html>" + newLine + iframe.contentDocument.getElementsByTagName('html')[0].outerHTML);
+        }, 1000)
+        return iframe;
+    }
 
-    var loadresources = function (arg, callback) {
+    /**
+     * append htmlstring to an element
+     * @param {string} tag - tagname (eg: body, div, script)
+     * @param {string} html - html string to be appended
+     */
+    AppendHtmltoElement = function (tag, html) {
+        var iframe = ResetiFrame(editor.getValue(), tag, html);
+        //var cntrls = iframe.contentDocument.getElementsByTagName(tag);//.append(html);
+        //var tgs = Array.prototype.slice.call(cntrls);
+        //if (!tgs || !tgs.length)
+        //    return;
+        //(tgs || []).forEach(function (crtl) {
+        //    crtl.innerHTML = newLine + crtl.innerHTML + html + newLine;
+        //});
+        //editor.setValue("<!DOCTYPE html>" + newLine + iframe.contentDocument.getElementsByTagName('html')[0].outerHTML);
+    }
+
+    var TranslateElement = function (args) {
+        //arg = (args || '').replace(/ /g, '').toLowerCase();
+        args = args.toLowerCase().split(' ');
+        arg = args[0];
+        var elem = '';
+        if (arg == "script") {
+            elem = '<' + arg + ' type="text/javascript"></' + arg + '>';
+        } else if (arg == "table") {
+            elem = TranslateTableElement(args.slice(1));
+        } else {
+            elem = '<' + arg + '></' + arg + '>';
+        }
+        return elem;
+    }
+
+    var TranslateTableElement = function (arg) {
+        if (!arg || !arg.length)
+            return '<table></table>';
+        var tr = 0; tc = 0, w = -1;
+        w = arg.indexOf("row")
+        if (w > -1 && arg.length > w) {
+            var tnum = TranslateNumbers(arg[w + 1]);
+            if (!isNaN(parseInt(tnum))) {
+                console.log("Table Row Count: " + parseInt(tnum));
+                tr = parseInt(tnum);
+            }
+        }
+        w = arg.indexOf("column");
+        if (w > -1 && arg.length > w) {
+            var tnum = TranslateNumbers(arg[w + 1]);
+            if (!isNaN(parseInt(tnum))) {
+                console.log("Table Column Count: " + parseInt(tnum));
+                tc = parseInt(tnum);
+            }
+        }
+        var $tbl = $('<table></table>');
+        for (var i = 0; i < tr; i++) {
+            var $tr = $("<tr></tr>");
+            for (j = 0; j < tc; j++) {
+                $tr.append("<td></td>")
+            }
+            $tbl.append($tr);
+        }
+        return $tbl[0].outerHTML;
+    }
+
+    var TranslateNumbers = function (txt) {
+        var eleven = ".level.lemon.eleven.";
+        var six = ".six.vi.";
+
+        if (!txt) return;
+        var txt = (txt || '').toString().toLowerCase();
+        if (!isNaN(parseInt(txt))) {
+            return txt;
+        }
+        txt = "." + txt + ".";
+        if (eleven.indexOf(txt) > -1) return "11";
+        if (six.indexOf(txt) > -1) return "6";
+        return txt;
+    }
+
+    var PrintContent = function (content) {
+        var selection = editor.getSelection();
+        if (selection.length > 0) {
+            editor.replaceSelection(content);
+        }
+        else {
+            var cursor = editor.getCursor();
+            editor.replaceRange(content, cursor);
+        }
+    }
+
+    var GetHtmlTemplate = function (arg, callback) {
         $.ajax({
-            url: "./Resources/resources.json",
+            url: "html_template.html",
             data: {
-
+                txtsearch: $('#appendedInputButton').val()
             },
             type: "GET",
-            dataType: "json",
+            dataType: "html",
             success: function (data) {
-                jsresource = data;
+                //alert(data);
+                //printctrl.val(data);
+                if (callback) {
+                    callback(data);
+                }
             },
             error: function (xhr, status) {
-                alert("Sorry, there was a problem in resource load.!");
+                alert("Sorry, there was a problem!");
             },
             complete: function (xhr, status) {
                 //$('#showresults').slideDown('slow')
@@ -1041,38 +1404,102 @@ $(function () {
         });
     }
 
-    var translate = function (event) {
-        var txtRec = '';
-        for (var i = event.resultIndex; i < event.results.length; ++i) {
-            txtRec += event.results[i][0].transcript;
-        }
-        return txtRec;
+    PostHtml = function (arg, callback) {
+        $.ajax({
+            url: "/Home/Preview",
+            data: {
+                HString: editor.getValue()
+            },
+            type: "POST",
+            dataType: "html",
+            success: function (data) {
+                //alert(data);
+                //printctrl.val(data);
+                if (callback) {
+                    callback(data);
+                }
+                var iframe = document.getElementById("ipr");
+                try {
+                    iframe.contentWindow.document.open();
+                    iframe.contentWindow.document.write("");
+                    iframe.contentWindow.document.close();
+                    iframe.contentWindow.document.open();
+                    iframe.contentWindow.document.write(data);
+                    iframe.contentWindow.document.close();
+                } catch (exp) {
+                    console.log("Invalid html format, pls validate before updating");
+                }
+                //$("#ipr").html(data);
+                //$("#prv").show();
+            },
+            error: function (xhr, status) {
+                alert("Sorry, there was a problem Preview!");
+            },
+            complete: function (xhr, status) {
+                //$('#showresults').slideDown('slow')
+            }
+        });
     }
 
-    var recognition = new webkitSpeechRecognition();
-    recognition.lang = "en-IN";
-    recognition.onresult = function (event) {
-        //console.log(event)
-        var text = translate(event);
-        ww.processCommand(text);
-        //var tt = $("#disp").val() + text + newLine;
-        //$("#disp").val(tt)
+    return {
+        processCommand: ProcessCommand
     }
-    recognition.onspeechend = function (event) {
-        //console.log('Speech recognition has stopped.',event);
+}
+
+    //Outer scope
+
+    var loadresources = function (arg, callback) {
+    $.ajax({
+        url: "./Resources/resources.json",
+        data: {
+
+        },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            jsresource = data;
+        },
+        error: function (xhr, status) {
+            alert("Sorry, there was a problem in resource load.!");
+        },
+        complete: function (xhr, status) {
+            //$('#showresults').slideDown('slow')
+        }
+    });
+}
+
+var translate = function (event) {
+    var txtRec = '';
+    for (var i = event.resultIndex; i < event.results.length; ++i) {
+        txtRec += event.results[i][0].transcript;
     }
-    recognition.onstart = function (event) {
-        //console.log("onstart", event);
-    }
-    recognition.onerror = function (event) {
-        //console.log("onerror", event);
-    }
-    recognition.onend = function () {
-        //console.log("onend");
-        recognition.stop();
-        recognition.start();
-    }
-    ww = a7v("#cmm");
+    return txtRec;
+}
+
+var recognition = new webkitSpeechRecognition();
+recognition.lang = "en-IN";
+recognition.onresult = function (event) {
+    //console.log(event)
+    var text = translate(event);
+    ww.processCommand(text);
+    //var tt = $("#disp").val() + text + newLine;
+    //$("#disp").val(tt)
+}
+recognition.onspeechend = function (event) {
+    //console.log('Speech recognition has stopped.',event);
+}
+recognition.onstart = function (event) {
+    //console.log("onstart", event);
+}
+recognition.onerror = function (event) {
+    //console.log("onerror", event);
+}
+recognition.onend = function () {
+    //console.log("onend");
+    recognition.stop();
     recognition.start();
-    loadresources();
+}
+ww = a7v("#cmm");
+recognition.start();
+loadresources();
 });
