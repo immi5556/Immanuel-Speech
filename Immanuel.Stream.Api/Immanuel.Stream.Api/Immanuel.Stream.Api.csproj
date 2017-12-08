@@ -323,6 +323,8 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Set_1\a7v-html.js" />
+    <Content Include="Set_1\Spch_html.html" />
     <Content Include="Spch_html.html" />
     <Content Include="Spch_1.html" />
     <Content Include="Spch_text.html" />
