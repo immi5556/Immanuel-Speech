@@ -1,5 +1,15 @@
-﻿var editor;
+﻿var editor, cmds;
 $(function () {
+
+    var fnTooltip = function () {
+        $('.sel-mul option').hover(function () {
+            console.log($(this).data("cdata"));
+            var td = $(this).data("cdata");
+            $(".h-tooltip").find("xmp").remove();
+            $(".h-tooltip").append('<xmp> Desc: '  + td.desc + '</xmp>');
+            $(".h-tooltip").append('<xmp> Speak: ' + td.param + '</xmp>');
+        });
+    }
 
     window.a7v = function (container) {
         var newLine = "\r\n";
@@ -20,7 +30,7 @@ $(function () {
 
         var printcontainer = $("<div><textarea class='a7-printeMedia'></textarea></div>").css({
             width: "100%",
-            height: "100%",
+            height: "95%",
             paddingLeft: "2px",
             paddingTop: "10px",
             marigin: "3px",
@@ -36,7 +46,11 @@ $(function () {
         var init = function () {
             var $cmds;
             var appendCommands = function () {
-                var $ddv = $("<div class='mnu-contain'><div><a style='position:absolute;right:10px;' class='min-cmds' href='javascript:void(0);'>min</a></div></div>").css({
+                var $ddv = $('<div class="mnu-contain">' +
+                    '<div class="input- group">' +
+                    '<input id="txtSrc" type="text" class="form-control" style="height:50px;" placeholder= "Search" id= "inputGroup" />' +
+                '</div> ' +
+                    '</div>').css({
                     backgroundColor: "rgba(128, 128, 128, 0.5)",
                     width: "28%",
                     height: "95%",
@@ -45,7 +59,7 @@ $(function () {
                     right: 0,
                     top: 10
                 });
-                $cmds = $("<select multiple></select>").css({
+                $cmds = $("<select class='sel-mul' multiple></select>").css({
                     backgroundColor: "rgba(128, 128, 128, 0.5)",
                     width: "100%",
                     height: "100%"
@@ -57,7 +71,9 @@ $(function () {
                 }
                 ppr.sort();
                 ppr.forEach(function (v) {
-                    var $o = $("<option value=" + v + ">" + v + "</option>");
+                    //var $o = $("<option value=" + v + ">" + v + "</option>");
+                    var $o = $("<option value=" + v + ">" + (cmds[v].param || v) + "</option>");
+                    $o.data("cdata", cmds[v]);
                     $cmds.append($o);
                 })
                 $cmds.on("click", function () {
@@ -79,6 +95,7 @@ $(function () {
 
             appendCommands();
             BuildHtml();
+            fnTooltip();
         }
 
         //cmds
@@ -577,10 +594,6 @@ $(function () {
             PrintContent(torep);
         }
 
-        var addmetaresponsive = function () {
-            PrintContent('<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">');
-        }
-
         var addtitle = function (args) {
             if (args) {
                 PrintContent('<title>' + args + '</title>');
@@ -593,12 +606,11 @@ $(function () {
         var addseotags = function () {
             var tag = '<META NAME="ROBOTS" CONTENT="All, index, follow" />' + newLine;
             tag += '<META NAME="author" CONTENT="Immanuel" />' + newLine;
-            tag += '<meta name="keywords" content="free online youtube video download,free online youtube audio download, free online youtube mp3 extract download, split download, download specific portion both video & audio" />' + newLine;
+            tag += '<meta name="keywords" content="" />' + newLine;
             PrintContent(tag);
         }
 
         var addmetaresponsive = function () {
-            var tag = '';
             PrintContent('<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">');
         }
 
@@ -668,560 +680,728 @@ $(function () {
             AppendHtmltoElement("head", tag);
         }
 
-        var cmds = {
+        cmds = {
             //Regular Commands
             selectall: {
                 fn: selectall,
-                desc: 'Select All'
+                desc: 'Select All - Similar to CTRL+A(PC), CMD+A(MAC)',
+                param: 'Select All'
             },
             deleteall: {
                 fn: deleteall,
-                desc: ''
+                desc: 'Delete All - Clear the Content',
+                param: 'Delete All'
             },
             tellit: {
                 fn: deletes,
-                desc: ''
+                desc: 'Alternate: Deletes the current',
+                param: 'Tell It'
             },
             delete: {
                 fn: deletes,
-                desc: ''
+                desc: 'Deletes the current cursor position',
+                param: 'Delete'
             },
             deleteword: {
                 fn: deleteword,
-                desc: ''
+                desc: 'Deletes the current word',
+                param: 'Delete Word'
             },
             backspace: {
                 fn: backspace,
-                desc: ''
+                desc: 'Backspace from the current cursor',
+                param: 'Backspace'
             },
             focus: {
                 fn: focus,
-                desc: ''
+                desc: 'Focus and the cursor blinks',
+                param: 'Focus'
             },
             controlhome: {
                 fn: godocstart,
-                desc: ''
+                desc: 'Move the cursor to the start of the document \nCtrl-Home (PC), Cmd-Up (Mac), Cmd-Home (Mac)',
+                param: 'Control Home'
             },
             gotostart: {
                 fn: godocstart,
-                desc: ''
+                desc: 'Move the cursor to the start of the document \nCtrl-Home (PC), Cmd-Up (Mac), Cmd-Home (Mac)',
+                param: 'Go To Start'
             },
             godocstart: {
                 fn: godocstart,
-                desc: ''
+                desc: 'Move the cursor to the start of the document \nCtrl-Home (PC), Cmd-Up (Mac), Cmd-Home (Mac)',
+                param: 'Go Doc Start'
             },
             controlend: {
                 fn: godocend,
-                desc: ''
+                desc: 'Move the cursor to the end of the document. \nCtrl-End (PC), Cmd-End (Mac), Cmd-Down (Mac)',
+                param: 'Control End'
             },
             gotoend: {
                 fn: godocend,
-                desc: ''
+                desc: 'Move the cursor to the end of the document. \nCtrl-End (PC), Cmd-End (Mac), Cmd-Down (Mac)',
+                param: 'Go To End'
             },
             godocend: {
                 fn: godocend,
-                desc: ''
+                desc: 'Move the cursor to the end of the document. \nCtrl-End (PC), Cmd-End (Mac), Cmd-Down (Mac)',
+                param: 'Go Doc End'
             },
             selectline: {
                 fn: selectline,
-                desc: ''
+                desc: 'Selects the current line',
+                param: 'Select Line'
             },
             selectlines: {
                 fn: selectline,
-                desc: ''
+                desc: 'Selects the current line',
+                param: 'Select Lines'
             },
             enter: {
                 fn: nextline,
-                desc: ''
+                desc: 'Line break in current cursor position',
+                param: 'Enter'
             },
             explain: {
                 fn: nextline,
-                desc: ''
+                desc: 'Alternate (Enter): Line break in current cursor position',
+                param: 'Explain'
             },
             neckline: {
                 fn: nextline,
-                desc: ''
+                desc: 'Alternate (Enter): Line break in current cursor position',
+                param: 'Neck Line'
             },
             nextline: {
                 fn: nextline,
-                desc: ''
+                desc: 'Alternate (Enter): Line break in current cursor position',
+                param: 'Next Line'
             },
             anbu: {
                 fn: undo,
-                desc: ''
+                desc: 'Alternate (Undo): Undo the last change \n Ctrl-Z (PC), Cmd-Z (Mac)',
+                param: 'Anbu'
             },
             undo: {
                 fn: undo,
-                desc: ''
+                desc: 'Undo the last change \n Ctrl-Z (PC), Cmd-Z (Mac)',
+                param: 'Undo'
             },
             revert: {
                 fn: undo,
-                desc: ''
+                desc: 'Undo the last change \n Ctrl-Z (PC), Cmd-Z (Mac)',
+                param: 'Revert'
             },
             redo: {
                 fn: redo,
-                desc: ''
+                desc: 'Redo the last undone change \n Ctrl-Y (PC), Shift-Cmd-Z (Mac), Cmd-Y (Mac)',
+                param: 'Redo'
             },
             controlc: {
                 fn: controlc,
-                desc: ''
+                desc: 'Alternate (copy): copy the selection',
+                param: 'Control C'
             },
             copy: {
                 fn: controlc,
-                desc: ''
+                desc: 'copy the selection',
+                param: 'copy'
             },
             controlx: {
                 fn: controlx,
-                desc: ''
+                desc: 'Alternate (cut): cut the selection',
+                param: 'Control X'
             },
             cut: {
                 fn: controlx,
-                desc: ''
+                desc: 'cut the selection',
+                param: 'Cut'
             },
             controlv: {
                 fn: controlv,
-                desc: ''
+                desc: 'Paste the Selection',
+                param: 'Control V'
             },
             paste: {
                 fn: controlv,
-                desc: ''
+                desc: 'Paste the Selection',
+                param: 'Paste'
             },
             semicolon: {
                 fn: semicolon,
-                desc: ''
+                desc: 'Single char - ;',
+                param: ';'
             },
             space: {
                 fn: space,
-                desc: ''
+                desc: 'Single char - Space',
+                param: 'Space'
             },
             karma: {
                 fn: karma,
-                desc: ''
+                desc: '',
+                param: ''
             },
             comma: {
                 fn: karma,
-                desc: ''
+                desc: 'Alternate (,) - Singel Char - ,',
+                param: ','
             },
             exclamation: {
                 fn: exclamation,
-                desc: ''
+                desc: 'Single Char - !',
+                param: '!'
             },
             clamation: {
                 fn: exclamation,
-                desc: ''
+                desc: 'Alternate (clamation): Single Char - !',
+                param: 'clamation'
             },
             period: {
                 fn: period,
-                desc: ''
+                desc: 'Single Char - .',
+                param: 'Period'
+            },
+            fullstop: {
+                fn: period,
+                desc: 'Single Char - .',
+                param: 'Full Stop'
             },
             singlequote: {
                 fn: singlequote,
-                desc: ''
+                desc: 'Single Char - \'',
+                param: 'Single Quote'
             },
             singlequotes: {
                 fn: singlequotes,
-                desc: ''
+                desc: 'Single Quotes, \'\'',
+                param: 'Single Quotes'
             },
             doublequote: {
                 fn: doublequote,
-                desc: ''
+                desc: 'Single Char - "',
+                param: 'Double Quote'
             },
             doublequotes: {
                 fn: doublequotes,
-                desc: ''
+                desc: 'Double Quotes - ""',
+                param: 'Double Quotes'
             },
             openparenthesis: {
                 fn: openparenthesis,
-                desc: ''
+                desc: 'Single Char - (',
+                param: 'Open Parenthesis'
             },
             openparentheses: {
                 fn: openparenthesis,
-                desc: ''
+                desc: 'Open Pranetheses',
+                param: 'Open Parentheses'
             },
             openbracket: {
                 fn: openparenthesis,
-                desc: ''
+                desc: 'Single Char - (',
+                param: 'Open Bracket'
             },
             closeparenthesis: {
                 fn: closeparenthesis,
-                desc: ''
+                desc: 'Single Char - )',
+                param: 'Close Parenthesis'
             },
             closeparentheses: {
                 fn: closeparenthesis,
-                desc: ''
+                desc: 'Single Char - )',
+                param: 'Close Parentheses'
             },
             closebracket: {
                 fn: closeparenthesis,
-                desc: ''
+                desc: 'Single Char - )',
+                param: 'Close Bracket'
             },
             scrolltop: {
                 fn: scrolltop,
-                desc: ''
+                desc: 'Scroll Top',
+                param: 'Scroll Top'
             },
             scrollup: {
                 fn: scrollup,
-                desc: ''
+                desc: 'Scroll Up',
+                param: 'Scroll Up'
             },
             scrolldown: {
                 fn: scrolldown,
-                desc: ''
+                desc: 'Scroll Down',
+                param: 'Scroll Down'
             },
             scrollbottom: {
                 fn: scrollbottom,
-                desc: ''
+                desc: 'Scroll Bottom',
+                param: 'Scroll Bottom'
             },
             scrollright: {
                 fn: scrollright,
-                desc: ''
+                desc: 'Scroll Right',
+                param: 'Scroll Right'
             },
             scrollend: {
                 fn: scrollend,
-                desc: ''
+                desc: 'Scroll End',
+                param: 'Scroll End'
             },
             scrollhome: {
                 fn: scrollhome,
-                desc: ''
+                desc: 'Scroll Home',
+                param: 'Scroll Home'
             },
             scrollleft: {
                 fn: scrollleft,
-                desc: ''
+                desc: 'Scroll Left',
+                param: 'Scroll Left'
             },
             letter: {
                 fn: letter,
-                desc: ''
+                desc: 'Value will be considered as letters',
+                param: 'Letter !Value'
             },
             capitalletter: {
                 fn: capitalletter,
-                desc: ''
+                desc: 'argument value will be CAPITALIZED',
+                param: 'Capital Letter !Value'
             },
             gotoline: {
                 fn: gotoline,
-                desc: ''
+                desc: 'Move the cursor position to line',
+                param: 'Go To Line !LineNo'
             },
             linenumber: {
                 fn: gotoline,
-                desc: ''
+                desc: 'Move the cursor position to line',
+                param: 'Line Number !LineNumber'
             },
             gotocolumn: {
                 fn: gotocolumn,
-                desc: ''
+                desc: 'Move the cursor position to column',
+                param: 'Go To Column !ColumnPosition'
             },
             columnnumber: {
                 fn: gotocolumn,
-                desc: ''
+                desc: 'Move the cursor position to column',
+                param: 'Column Number !ColumnPosition'
             },
             singleselection: {
                 fn: singleselection,
-                desc: ''
+                desc: 'When multiple selections are present, this deselects all but the primary selection',
+                param: 'Single Selection'
             },
             movelineup: {
                 fn: movelineup,
-                desc: ''
+                desc: 'Moves the cursor position up',
+                param: 'Move Line Up'
             },
             movelinedown: {
                 fn: movelinedown,
-                desc: ''
+                desc: 'Moves the current line down',
+                param: 'Move Line Down'
             },
             killline: {
                 fn: killline,
-                desc: ''
+                desc: 'Deletes the part of the line after the cursor',
+                param: 'Kill Line'
             },
             deleteline: {
                 fn: deleteline,
-                desc: ''
+                desc: 'Deletes the whole line under the cursor, including newline at the end',
+                param: 'Delete Line'
+            },
+            deletelineleft: {
+                fn: dellineleft,
+                desc: 'Delete the part of the line before the cursor',
+                param: 'Delete Line Left'
             },
             dellineleft: {
                 fn: dellineleft,
-                desc: ''
+                desc: 'Delete the part of the line before the cursor',
+                param: 'Del Line Left'
+            },
+            deletewrappedlineleft: {
+                fn: delwrappedlineleft,
+                desc: 'Delete the part of the line from the left side of the visual line the cursor is on to the cursor',
+                param: 'Del Wrapped Line Left'
             },
             delwrappedlineleft: {
                 fn: delwrappedlineleft,
-                desc: ''
+                desc: 'Delete the part of the line from the left side of the visual line the cursor is on to the cursor',
+                param: 'Del Wrapped Line Left'
+            },
+            deletewrappedlineright: {
+                fn: delwrappedlineright,
+                desc: 'Delete the part of the line from the cursor to the right side of the visual line the cursor is on',
+                param: 'Delete Wrapped Line Right'
             },
             delwrappedlineright: {
                 fn: delwrappedlineright,
-                desc: ''
+                desc: 'Delete the part of the line from the cursor to the right side of the visual line the cursor is on',
+                param: 'Del Wrapped Line Right'
             },
             undoselection: {
                 fn: undoselection,
-                desc: ''
+                desc: 'Undo one edit or selection change',
+                param: 'Undo Selection'
             },
             redoselection: {
                 fn: redoselection,
-                desc: ''
+                desc: 'Redo the last change to the selection, or the last text change if no selection changes remain \nAlt-U (PC), Shift-Cmd-U (Mac)',
+                param: 'Redo Selection'
             },
             golinestart: {
                 fn: golinestart,
-                desc: ''
+                desc: '',
+                param: ''
             },
             home: {
                 fn: golinestart,
-                desc: ''
+                desc: '',
+                param: ''
             },
             smarthome: {
                 fn: golinestartsmart,
-                desc: ''
-            },
-            controlhome: {
-                fn: godocstart,
-                desc: ''
+                desc: '',
+                param: ''
             },
             controlend: {
                 fn: godocend,
-                desc: ''
+                desc: '',
+                param: ''
             },
             golineend: {
                 fn: golineend,
-                desc: ''
+                desc: '',
+                param: ''
             },
             end: {
                 fn: golineend,
-                desc: ''
+                desc: '',
+                param: ''
             },
             endofline: {
                 fn: golineend,
-                desc: ''
+                desc: '',
+                param: ''
             },
             golineright: {
                 fn: golineright,
-                desc: ''
+                desc: '',
+                param: ''
             },
             golineleft: {
                 fn: golineleft,
-                desc: ''
+                desc: '',
+                param: ''
             },
             golineleftsmart: {
                 fn: golineleftsmart,
-                desc: ''
+                desc: '',
+                param: ''
             },
             golineup: {
                 fn: golineup,
-                desc: ''
+                desc: '',
+                param: ''
             },
             uparrow: {
                 fn: golineup,
-                desc: ''
+                desc: '',
+                param: ''
             },
             apparel: {
                 fn: golineup,
-                desc: ''
+                desc: '',
+                param: ''
             },
             narrow: {
                 fn: golinedown,
-                desc: ''
+                desc: '',
+                param: ''
             },
             golinedown: {
                 fn: golinedown,
-                desc: ''
+                desc: '',
+                param: ''
             },
             downarrow: {
                 fn: golinedown,
-                desc: ''
+                desc: '',
+                param: ''
             },
             gopageup: {
                 fn: gopageup,
-                desc: ''
+                desc: '',
+                param: ''
             },
             pageup: {
                 fn: gopageup,
-                desc: ''
+                desc: '',
+                param: ''
             },
             gopagedown: {
                 fn: gopagedown,
-                desc: ''
+                desc: '',
+                param: ''
             },
             pagedown: {
                 fn: gopagedown,
-                desc: ''
+                desc: '',
+                param: ''
             },
             gocharleft: {
                 fn: gocharleft,
-                desc: ''
+                desc: '',
+                param: ''
             },
             leftarrow: {
                 fn: gocharleft,
-                desc: ''
+                desc: '',
+                param: ''
             },
             gocharright: {
                 fn: gocharright,
-                desc: ''
+                desc: '',
+                param: ''
             },
             rightarrow: {
                 fn: gocharright,
-                desc: ''
+                desc: '',
+                param: ''
             },
             gocolumnleft: {
                 fn: gocolumnleft,
-                desc: ''
+                desc: '',
+                param: ''
             },
             gocolumnright: {
                 fn: gocolumnright,
-                desc: ''
+                desc: '',
+                param: ''
             },
             gowordleft: {
                 fn: gowordleft,
-                desc: ''
+                desc: '',
+                param: ''
             },
             controlleftarrow: {
                 fn: gowordleft,
-                desc: ''
+                desc: '',
+                param: ''
             },
             gowordright: {
                 fn: gowordright,
-                desc: ''
+                desc: '',
+                param: ''
             },
             controlrightarrow: {
                 fn: gowordright,
-                desc: ''
+                desc: '',
+                param: ''
             },
             gogroupleft: {
                 fn: gogroupleft,
-                desc: ''
+                desc: '',
+                param: ''
             },
             gogroupright: {
                 fn: gogroupright,
-                desc: ''
+                desc: '',
+                param: ''
             },
             delcharbefore: {
                 fn: delcharbefore,
-                desc: ''
+                desc: '',
+                param: ''
             },
             delcharafter: {
                 fn: delcharafter,
-                desc: ''
+                desc: '',
+                param: ''
             },
             deletes: {
                 fn: delcharafter,
-                desc: ''
+                desc: '',
+                param: ''
             },
             defaulttab: {
                 fn: defaulttab,
-                desc: ''
+                desc: '',
+                param: ''
             },
             tab: {
                 fn: defaulttab,
-                desc: ''
+                desc: '',
+                param: ''
             },
             delwordafter: {
                 fn: delwordafter,
-                desc: ''
+                desc: '',
+                param: ''
             },
             delgroupbefore: {
                 fn: delgroupbefore,
-                desc: ''
+                desc: '',
+                param: ''
             },
             delgroupafter: {
                 fn: delgroupafter,
-                desc: ''
+                desc: '',
+                param: ''
             },
             indentauto: {
                 fn: indentauto,
-                desc: ''
+                desc: '',
+                param: ''
             },
             indentmore: {
                 fn: indentmore,
-                desc: ''
+                desc: '',
+                param: ''
             },
             indentless: {
                 fn: indentless,
-                desc: ''
+                desc: '',
+                param: ''
             },
             insertsofttab: {
                 fn: insertsofttab,
-                desc: ''
+                desc: '',
+                param: ''
             },
             transposechars: {
                 fn: transposechars,
-                desc: ''
+                desc: '',
+                param: ''
             },
             newlineindent: {
                 fn: newlineandindent,
-                desc: ''
+                desc: '',
+                param: ''
             },
             newlinetab: {
                 fn: newlineandindent,
-                desc: ''
+                desc: '',
+                param: ''
             },
             entertab: {
                 fn: newlineandindent,
-                desc: ''
+                desc: '',
+                param: ''
             },
             toggleoverwrite: {
                 fn: toggleoverwrite,
-                desc: ''
+                desc: '',
+                demolink: '',
+                param: ''
             },
             //HTML Cmds
             createhtml: {
                 fn: createhtml,
-                desc: ''
+                desc: 'Loads the basic Html Template',
+                demolink: '',
+                param: 'Create Html'
             },
             createelement: {
                 fn: createelement,
-                desc: ''
+                desc: 'Create Element',
+                demolink: '',
+                param: 'Create Element !name'
             },
             closeelement: {
                 fn: closeelement,
-                desc: 'Close Element !elemenetName'
+                desc: 'Appends close element to the current curosr dom',
+                demolink: '',
+                param: 'Close Element !elemenetName'
             },
             formathtml: {
                 fn: formathtml,
-                desc: ''
+                desc: 'Dees alighnment for the current selection',
+                demolink: '',
+                param: 'Format Html'
             },
             selectelement: {
                 fn: selectelement,
-                desc: ''
+                desc: 'Selects the current element in the cursor position',
+                demolink: '',
+                param: 'Select Element'
             },
             editelement: {
                 fn: editelement,
-                desc: ''
+                desc: 'Edit Html, Edit the Current dom element in Cursor positioned',
+                demolink: '',
+                param: 'Edit Html'
             },
             addattribute: {
                 fn: addattribute,
-                desc: ''
+                desc: 'Add attribute to the element, ex: <div name="value">',
+                demolink: '',
+                param: 'Add Attribute !name !value'
             },
             addclass: {
                 fn: addclass,
-                desc: ''
+                desc: 'Add class to the current element, ex: <div class="value">',
+                demolink: '',
+                param: ''
             },
             appendelement: {
                 fn: appendelement,
-                desc: ''
+                desc: 'Append element',
+                demolink: 'Append element to the current selected dom',
+                param: 'Append element !name'
             },
             addmetaresponsive: {
                 fn: addmetaresponsive,
-                desc: ''
+                desc: 'Add meta tag <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">',
+                demolink: '',
+                param: 'Add Meta Responsive'
             },
             previewhtml: {
                 fn: previewhtml,
-                desc: ''
+                desc: 'Preview the current html content',
+                demolink: '',
+                param: 'Preview'
             },
             //Javascript
             addfunction: {
                 fn: addfunction,
-                desc: ''
+                desc: 'Add javascript function in the current cursor position',
+                demolink: '',
+                param: 'Add Function !Name'
             },
             //Rresource
             addjquery: {
                 fn: addjquery,
-                desc: ''
+                desc: 'Add jquery script block in the current cursor position',
+                demolink: 'https://jquery.com/',
+                param: 'Add Jquery !version'
             },
             addbootstrap: {
                 fn: addbootstrap,
-                desc: ''
+                desc: 'Add Bootstap, add bootstrap script',
+                demolink: 'https://getbootstrap.com/',
+                param: 'Add Bootstap !version '
             },
             addbrahmaprogress: {
                 fn: addbrahmaprogress,
-                desc: ''
+                desc: 'Add Brahma Progress - Is a progress',
+                demolink:'',
+                param: 'Add Brahma Progress'
             },
             addtitle: {
                 fn: addtitle,
-                desc: 'Add title',
-                param: 'addtitle !titletext'
+                desc: 'Adds <title> tag',
+                demolink: '',
+                param: 'Add Title !titletext'
             },
             addseotags: {
                 fn: addseotags,
                 desc: 'Add Common Seo Tags, meta names - description, ROBOTS, author, keywords',
-                param: 'addseotags'
+                demolink: '',
+                param: 'Add S.E.O Tags'
             }
         }
         init();
@@ -1561,6 +1741,40 @@ $(function () {
     loadresources();
 
     $(".min-cmds").on("click", function () {
-        $(".mnu-contain").hide();
+        $(".mnu-contain").slideToggle(200);
+        if ($("#imgvTb").hasClass("rt")) {
+            $("#imgvTb").attr("src", "../Content/lt_vr_1.png");
+            $("#imgvTb").removeClass("rt");
+            $("#imgvTb").addClass("lt");
+        } else if ($("#imgvTb").hasClass("lt")) {
+            $("#imgvTb").attr("src", "../Content/rt_vr_1.png");
+            $("#imgvTb").removeClass("lt");
+            $("#imgvTb").addClass("rt");
+        }
+    });
+
+    $(document).on("keyup", "#txtSrc", function () {
+        console.log(cmds);
+        var tos = $(this).val();
+        if (tos) {
+            $(".sel-mul option").css("display", "none");
+        } else {
+            $(".sel-mul option").css("display", "block");
+        }
+        var arrl = Object.keys(cmds);
+        var sarr = [];
+        var fl = arrl.filter(function (v) {
+            if (((v || '').indexOf(tos) > -1) || ((cmds[v].desc || '').indexOf(tos) > -1)) {
+                sarr.push(cmds[v]);
+            }
+        });
+
+        if (sarr && sarr.length) {
+            $(".sel-mul option").each(function () {
+                if (sarr.indexOf($(this).data("cdata")) > -1) {
+                    $(this).css("display", "block");
+                }
+            });
+        }
     });
 });

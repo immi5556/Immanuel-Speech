@@ -280,6 +280,11 @@
     <Content Include="CodeMorr\lib\xml\xml.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\cm_.png" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\lt_vr_1.png" />
+    <Content Include="Content\rt_vr_1.png" />
+    <Content Include="Content\voi_hlp.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -309,6 +314,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="cmd_list.json" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Resources\resources.json" />
     <Content Include="Resources\bgProgress\bgProgress-v1.0.css" />
@@ -323,7 +329,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Set_1\a7v-html.js" />
+    <Content Include="Set_1\a7v-html-v1.js" />
     <Content Include="Set_1\Spch_html.html" />
     <Content Include="Spch_html.html" />
     <Content Include="Spch_1.html" />

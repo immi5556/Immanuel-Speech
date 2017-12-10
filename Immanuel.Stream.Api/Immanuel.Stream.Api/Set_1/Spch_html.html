@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
     <link href="../CodeMorr/lib/codemirror.css" rel="stylesheet" />
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+    <script src="../Scripts/bootstrap.min.js"></script>
+    <link href="../Content/font-awesome.min.css" rel="stylesheet" />
     <script src="../CodeMorr/lib/codemirror.js"></script>
     <script src="../CodeMorr/lib/utils/xml-fold.js"></script>
     <script src="../CodeMorr/lib/utils/formatting.js"></script>
@@ -18,6 +21,37 @@
         html, body {
             height: 100%;
             overflow: hidden;
+        }
+
+        .sel-mul option {
+            height: 25px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: large;
+            line-height: 22px;
+        }
+
+            .sel-mul option:nth-child(even) {
+                background-color: #e5ba8b;
+            }
+
+            .sel-mul option:nth-child(odd) {
+                background-color: #c0d6a4;
+            }
+
+        .h-tooltip {
+            position: absolute;
+            left: 70%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            color: black;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+        }
+
+        xmp {
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
     </style>
     <meta name="viewport" content="width=device-width" />
@@ -39,8 +73,15 @@
     <iframe style="display:none" id="ifrm"></iframe>
     <div id="cmm" style="height:100%;width:100%;"></div>
     <div class="modal-block" style="position:fixed;left:0;top:0;width:100%;height:100%;overflow:hidden;z-index:101;background-color:rgba(0, 0, 0, 0.45);align-content:center;justify-content:center;text-align:center;display:none;">
-        <iframe id="ipr" style="width:90%;height:90%;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);background-color:white;border-radius:5px;">
-        </iframe>
+        <iframe id="ipr" style="width:90%;height:90%;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);background-color:white;border-radius:5px;"></iframe>
+    </div>
+    <div style='position:absolute;right:0px;top:10px;'><a style='padding:0px;' class='min-cmds' href='javascript:void(0);'><img id="imgvTb" class="rt" src="../Content/rt_vr_1.png" width="50" height="50" /></a></div>
+    <div class="h-tooltip">
+        <h3>How To Use?</h3>
+        <img src="../Content/voi_hlp.png" width="200" height="100" />
+    </div>
+    <div style="position:fixed;left:20px;bottom:10px;">
+        Powered By  <a href="https://codemirror.net/"> <img src="../Content/cm_.png" width="30" height="30" /> </a> CodeMirror
     </div>
 </body>
 </html>
