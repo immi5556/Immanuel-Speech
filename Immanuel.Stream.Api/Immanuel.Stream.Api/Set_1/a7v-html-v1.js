@@ -2,12 +2,16 @@
 $(function () {
 
     var fnTooltip = function () {
-        $('.sel-mul option').hover(function () {
+        $(document).on('mouseenter', '.sel-mul option', function () {
             console.log($(this).data("cdata"));
             var td = $(this).data("cdata");
+            $(".h-tooltip").css("display", "block")
             $(".h-tooltip").find("xmp").remove();
-            $(".h-tooltip").append('<xmp> Desc: '  + td.desc + '</xmp>');
+            $(".h-tooltip").append('<xmp> Desc: ' + td.desc + '</xmp>');
             $(".h-tooltip").append('<xmp> Speak: ' + td.param + '</xmp>');
+        });
+        $(document).on('mouseleave', '.sel-mul option', function () {
+            $(".h-tooltip").css("display", "none")
         });
     }
 
