@@ -280,15 +280,12 @@
     <Content Include="CodeMorr\lib\xml\index.html" />
     <Content Include="CodeMorr\lib\xml\test.js" />
     <Content Include="CodeMorr\lib\xml\xml.js" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\cm_.png" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\lt_vr_1.png" />
     <Content Include="Content\rt_vr_1.png" />
     <Content Include="Content\voi_hlp.png" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="html_template.html" />
@@ -307,8 +304,6 @@
     <Content Include="sample.html" />
     <Content Include="Scripts\audio\gumadapter.js" />
     <Content Include="Scripts\audio\MediaStreamRecorder.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -355,15 +350,6 @@
   <ItemGroup>
     <Folder Include="App_Data\Temp\" />
     <Folder Include="Sphx\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
