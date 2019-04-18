@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Speech.Transform.exe" size="10720">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Speech.Transform.exe" size="9728">
       <assemblyIdentity name="Speech.Transform" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>51E0Oyzbi6McKFLCRuykSoLjBMiR3PaGbbXDghJ0DE8=</dsig:DigestValue>
+        <dsig:DigestValue>nUcKPZGv0y/OvHQLZgIpOw38Lvuik1q0y4gVQKYppfU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
